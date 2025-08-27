@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask - Tasks</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="min-h-screen gradient-bg">
+        <div class="container mx-auto px-4 py-8 max-w-4xl">
+            <nav class="navbar-card fixed-nav">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check-square" class="h-8 w-8 text-primary"></i>
+                        <h1 class="text-2xl font-bold">ZenTask</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="index.html" class="nav-link">Dashboard</a>
+                        <a href="tasks.html" class="nav-link active">Tasks</a>
+                        <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
+                            <i data-lucide="sun" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="space-y-8 main-content">
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold mb-2">Task Manager</h1>
+                    <p class="text-muted-foreground text-lg">
+                        Organize your tasks and boost your productivity
+                    </p>
+                </div>
+
+                <div class="task-card">
+                    <h2 class="text-xl font-semibold mb-4">Add New Task</h2>
+                    <form id="task-form" class="task-form-grid">
+                        <div class="form-group">
+                            <label for="task-input" class="form-label">Task Description</label>
+                            <input 
+                                type="text" 
+                                id="task-input"
+                                placeholder="Enter a new task..."
+                                class="input"
+                                required
+                            />
+                        </div>
+                        <div class="form-group">
+                            <label for="priority-select" class="form-label">Priority</label>
+                            <select id="priority-select" class="select">
+                                <option value="normal">Normal</option>
+                                <option value="important">Important</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="due-date-input" class="form-label">Due Date</label>
+                            <input 
+                                type="datetime-local" 
+                                id="due-date-input"
+                                class="input"
+                            />
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary px-6">
+                                <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                                Add Task
+                            </button>
+                        </div>
+                    </form>
+                    <div id="form-error" class="error-message" style="display: none;"></div>
+                </div>
+
+                <div class="task-card">
+                    <h2 class="text-xl font-semibold mb-4">
+                        Your Tasks (<span id="task-count">0</span>)
+                    </h2>
+                    
+                    <div id="empty-state" class="text-center py-12" style="display: none;">
+                        <i data-lucide="check-square" class="h-16 w-16 text-muted-foreground mx-auto mb-4"></i>
+                        <h3 class="text-lg font-medium mb-2">No tasks yet</h3>
+                        <p class="text-muted-foreground">
+                            Add your first task above to get started!
+                        </p>
+                    </div>
+
+                    <ul id="task-list" class="space-y-3">
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast" style="display: none;">
+        <div class="toast-content">
+            <span id="toast-message"></span>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script type="module" src="js/tasks.js"></script>
+</body>
+</html>

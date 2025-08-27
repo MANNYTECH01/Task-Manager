@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZenTask - Dashboard</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="min-h-screen gradient-bg">
+        <div class="container mx-auto px-4 py-8 max-w-6xl">
+            <nav class="navbar-card fixed-nav">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <i data-lucide="check-square" class="h-8 w-8 text-primary"></i>
+                        <h1 class="text-2xl font-bold">ZenTask</h1>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <a href="index.html" class="nav-link active">Dashboard</a>
+                        <a href="tasks.html" class="nav-link">Tasks</a>
+                        <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
+                            <i data-lucide="sun" class="h-4 w-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </nav>
+
+            <div class="space-y-8 main-content">
+                <div class="text-center">
+                    <h1 class="text-4xl font-bold mb-2">Welcome to ZenTask</h1>
+                    <p class="text-muted-foreground text-lg">
+                        Your productivity companion for getting things done
+                    </p>
+                </div>
+
+                <div id="stats-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    </div>
+
+                <div class="task-card">
+                    <h2 class="text-xl font-semibold mb-4">Quick Actions</h2>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="tasks.html" class="btn btn-primary">
+                            <i data-lucide="plus" class="h-4 w-4 mr-2"></i>
+                            Add New Task
+                        </a>
+                        <button id="clear-completed" class="btn btn-secondary">
+                            <i data-lucide="trash-2" class="h-4 w-4 mr-2"></i>
+                            Clear Completed
+                        </button>
+                    </div>
+                </div>
+
+                <div class="task-card">
+                    <h2 class="text-xl font-semibold mb-4">💡 Productivity Tip</h2>
+                    <div id="productivity-tip" class="text-muted-foreground">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
