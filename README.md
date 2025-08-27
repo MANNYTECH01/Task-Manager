@@ -27,13 +27,13 @@ Behavior: Modular JavaScript (ES6+)
 **Getting Started**
 Getting started with ZenTask is incredibly simple. Because it's a client-side application, you don't need to install any dependencies or run any commands.
 
-How to Run
+#How to Run
 
 Download or Clone the Repository: Get a copy of the project files on your local machine.
 Open the HTML File: Navigate to the project folder and open the index.html file directly in your web browser (like Chrome, Firefox, or Safari).
 That's it! The application will launch, and you can start managing your tasks.
 
-Usage
+#Usage
 
 Once the application is open in your browser, you can start using it right away:
 Dashboard (index.html): The main dashboard gives you a high-level overview of your tasks. From here, you can quickly see your progress and navigate to the tasks page.
@@ -49,7 +49,6 @@ Create your Feature Branch (git checkout -b feature/AmazingFeature)
 Commit your Changes (git commit -m 'Add some AmazingFeature')
 
 Push to the Branch (git push origin feature/AmazingFeature)
-
 Open a Pull Request
 
 **License**
