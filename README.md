@@ -1,12 +1,12 @@
-**ZenTask** 
+**TaskFlow** 
 
-Welcome to ZenTask, a modern and intuitive task management application designed to help you find your focus, stay organized, and achieve your goals with a sense of calm. With a clean interface and powerful features, ZenTask turns your to-do list into a streamlined workflow.
+Welcome to TaskFlow, a modern and intuitive task management application designed to help you find your focus, stay organized, and achieve your goals with a sense of calm. With a clean interface and powerful features, TaskFlow turns your to-do list into a streamlined workflow.
 This application runs entirely in your web browser, using localStorage to save your tasks. No server or build tools are needed!
 
 
 **Features**
 
-ZenTask is packed with features to help you manage your tasks efficiently:
+TaskFlow is packed with features to help you manage your tasks efficiently:
 Dashboard Overview: Get a quick summary of your progress with stats on total, completed, and incomplete tasks.
 Task Management: Easily add, edit, delete, and mark tasks as complete.
 Persistent Storage: Your tasks are saved in your browser's localStorage, so they'll be there when you come back.
@@ -25,7 +25,7 @@ Styling: CSS3 with custom properties for theming
 Behavior: Modular JavaScript (ES6+)
 
 **Getting Started**
-Getting started with ZenTask is incredibly simple. Because it's a client-side application, you don't need to install any dependencies or run any commands.
+Getting started with TaskFlow is incredibly simple. Because it's a client-side application, you don't need to install any dependencies or run any commands.
 
 #How to Run
 

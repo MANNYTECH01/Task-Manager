@@ -1,7 +1,7 @@
 // Task Manager Module - Core business logic
 class TaskManager {
     constructor() {
-        this.storageKey = 'ZenTask-tasks';
+        this.storageKey = 'taskflow-tasks';
         this.tasks = this.loadTasks();
     }
 
@@ -34,8 +34,8 @@ class TaskManager {
         return [...this.tasks];
     }
 
-    // Add a new task
-    addTask(description, priority = 'normal', dueDate = null) {
+    // Add a new task with start and end times
+    addTask(description, priority = 'normal', startDateTime = null, endDateTime = null) {
         if (!description || !description.trim()) {
             throw new Error('Task description is required');
         }
@@ -45,7 +45,8 @@ class TaskManager {
             description: description.trim(),
             completed: false,
             priority: priority,
-            dueDate: dueDate,
+            startDateTime: startDateTime,
+            endDateTime: endDateTime,
             createdAt: new Date().toISOString()
         };
 
@@ -77,7 +78,7 @@ class TaskManager {
         return null;
     }
 
-    // Update task description, priority, or due date
+    // Update task description, priority, or dates
     updateTask(id, updates) {
         const task = this.tasks.find(t => t.id === id);
         if (task) {
@@ -90,8 +91,15 @@ class TaskManager {
             if (updates.priority !== undefined) {
                 task.priority = updates.priority;
             }
+            if (updates.startDateTime !== undefined) {
+                task.startDateTime = updates.startDateTime;
+            }
+            if (updates.endDateTime !== undefined) {
+                task.endDateTime = updates.endDateTime;
+            }
+            // Maintain backward compatibility
             if (updates.dueDate !== undefined) {
-                task.dueDate = updates.dueDate;
+                task.endDateTime = updates.dueDate;
             }
             this.saveTasks();
             return task;
@@ -110,15 +118,28 @@ class TaskManager {
         return null;
     }
 
-    // Get tasks due soon (within next hour)
+    // Get tasks due soon (within next hour) or starting soon
     getTasksDueSoon() {
         const now = new Date();
         const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
         
         return this.tasks.filter(task => {
-            if (task.completed || !task.dueDate) return false;
-            const dueDate = new Date(task.dueDate);
-            return dueDate <= oneHourFromNow && dueDate > now;
+            if (task.completed) return false;
+            
+            // Check end time (due date)
+            const endTime = task.endDateTime || task.dueDate; // Backward compatibility
+            if (endTime) {
+                const endDate = new Date(endTime);
+                if (endDate <= oneHourFromNow && endDate > now) return true;
+            }
+            
+            // Check start time
+            if (task.startDateTime) {
+                const startDate = new Date(task.startDateTime);
+                if (startDate <= oneHourFromNow && startDate > now) return true;
+            }
+            
+            return false;
         });
     }
 
@@ -136,12 +157,15 @@ class TaskManager {
                 return priorityOrder[a.priority] - priorityOrder[b.priority];
             }
             
-            // Then by due date (soonest first)
-            if (a.dueDate && b.dueDate) {
-                return new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime();
+            // Then by end date (soonest first)
+            const aEndTime = a.endDateTime || a.dueDate; // Backward compatibility
+            const bEndTime = b.endDateTime || b.dueDate;
+            
+            if (aEndTime && bEndTime) {
+                return new Date(aEndTime).getTime() - new Date(bEndTime).getTime();
             }
-            if (a.dueDate && !b.dueDate) return -1;
-            if (!a.dueDate && b.dueDate) return 1;
+            if (aEndTime && !bEndTime) return -1;
+            if (!aEndTime && bEndTime) return 1;
             
             // Finally by creation date (newest first)
             return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();

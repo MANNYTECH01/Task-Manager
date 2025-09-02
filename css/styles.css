@@ -25,8 +25,8 @@ body {
     --danger-hover: 0 72% 55%;
     --warning: 38 92% 50%;
     --warning-hover: 38 92% 45%;
-    --important: 291 47% 51%;
-    --important-hover: 291 47% 46%;
+    --important: 45 93% 58%; /* Golden yellow for important tasks */
+    --important-hover: 45 93% 53%; /* Slightly darker gold on hover */
     
     --background: 0 0% 100%;
     --foreground: 222 84% 5%;
@@ -83,8 +83,8 @@ body {
     --success-hover: 142 76% 41%;
     --danger: 0 72% 70%;
     --danger-hover: 0 72% 65%;
-    --important: 291 47% 61%;
-    --important-hover: 291 47% 56%;
+    --important: 45 93% 65%; /* Brighter golden yellow for dark mode */
+    --important-hover: 45 93% 60%; /* Slightly darker gold on hover for dark mode */
     
     /* Dark gradients */
     --gradient-bg: linear-gradient(135deg, hsl(222 84% 5%), hsl(217 33% 17%));
@@ -109,6 +109,36 @@ body {
     max-width: 100%;
     margin: 0 auto;
     padding: 0 1rem;
+    padding-top: 8rem; /* Account for fixed navbar - increased for better spacing */
+}
+
+/* Responsive container adjustments */
+@media (min-width: 640px) {
+    .container {
+        padding: 0 1.5rem;
+        padding-top: 8.5rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        padding: 0 2rem;
+        padding-top: 9rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 2rem;
+        padding-top: 9.5rem;
+    }
+}
+
+@media (min-width: 1280px) {
+    .container {
+        padding: 0 2rem;
+        padding-top: 10rem;
+    }
 }
 
 .mx-auto { margin-left: auto; margin-right: auto; }
@@ -163,97 +193,259 @@ body {
 .text-success { color: hsl(var(--success)); }
 .text-muted-foreground { color: hsl(var(--muted-foreground)); }
 
-/* Enhanced Cards with modern glassmorphism */
-.navbar-card, .task-card {
-    background: var(--gradient-card);
-    backdrop-filter: blur(16px);
-    border: 1px solid hsl(var(--border) / 0.5);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-    box-shadow: var(--shadow-lg);
+/* ========================================
+   NAVIGATION BAR COMPONENTS
+   ========================================
+   Fixed navigation bar at the top of the page with glassmorphism effect
+*/
+.main-navigation-bar {
+    /* Enhanced glassmorphism with better visibility */
+    background: linear-gradient(145deg, 
+        hsl(var(--background) / 0.95), 
+        hsl(var(--background) / 0.85)
+    );
+    backdrop-filter: blur(20px); /* Enhanced blur for better glass effect */
+    
+    /* More visible border for better definition */
+    border: 1px solid hsl(var(--border) / 0.8);
+    
+    /* Responsive padding and shadows */
+    padding: 1.25rem 1.5rem;
+    box-shadow: var(--shadow-xl), 
+                0 0 40px hsl(var(--primary) / 0.05); /* Subtle glow */
+    
+    /* Smooth transitions for interactive states */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
+    
+    /* Fixed positioning to stay at top during scroll */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* High z-index to stay above other content */
+    
+    /* Remove margins */
+    margin: 0; 
 }
 
-.navbar-card::before, .task-card::before {
-    content: '';
-    position: absolute;
+/* Responsive navbar adjustments */
+@media (min-width: 768px) {
+    .main-navigation-bar {
+        padding: 1.5rem 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .main-navigation-bar {
+        padding: 1.75rem 2.5rem;
+    }
+}
+
+/* ========================================
+   CONTENT CARD COMPONENTS  
+   ========================================
+   Reusable card component for displaying content sections
+*/
+.content-section-card {
+    /* Enhanced glassmorphism with better visibility */
+    background: linear-gradient(145deg, 
+        hsl(var(--background) / 0.90), 
+        hsl(var(--background) / 0.75)
+    );
+    backdrop-filter: blur(20px);
+    
+    /* More visible border styling */
+    border: 1px solid hsl(var(--border) / 0.7);
+    border-radius: var(--radius-lg);
+    
+    /* Responsive padding */
+    padding: 1.5rem;
+    
+    /* Enhanced shadow for depth perception */
+    box-shadow: var(--shadow-xl), 
+                0 0 30px hsl(var(--primary) / 0.03);
+    
+    /* Smooth transitions for hover and focus states */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Relative positioning for absolutely positioned children */
+    position: relative;
+    overflow: hidden; /* Prevents content from breaking card boundaries */
+}
+
+/* Responsive content card adjustments */
+@media (min-width: 640px) {
+    .content-section-card {
+        padding: 1.75rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .content-section-card {
+        padding: 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .content-section-card {
+        padding: 2.5rem;
+    }
+}
+
+/* ========================================
+   CARD DECORATIVE ELEMENTS
+   ========================================
+   Subtle top border accent for visual hierarchy
+*/
+.main-navigation-bar::before, .content-section-card::before {
+    content: ''; /* Required for pseudo-element to display */
+    position: absolute; /* Positioned relative to parent card */
+    
+    /* Full width line at the top of the card */
     top: 0;
     left: 0;
     right: 0;
     height: 1px;
+    
+    /* Primary gradient accent line */
     background: var(--gradient-primary);
-    opacity: 0.3;
+    opacity: 0.3; /* Subtle visibility for elegant effect */
 }
 
-.stat-card {
+/* ========================================
+   DASHBOARD STATISTICS CARDS
+   ========================================
+   Interactive cards displaying task statistics with hover effects
+*/
+.dashboard-statistics-card {
+    /* Consistent card styling with glassmorphism */
     background: var(--gradient-card);
     backdrop-filter: blur(16px);
     border: 1px solid hsl(var(--border) / 0.5);
     border-radius: var(--radius-lg);
+    
+    /* Comfortable padding for statistics content */
     padding: 2rem;
+    
+    /* Enhanced shadow for prominence */
     box-shadow: var(--shadow-lg);
+    
+    /* Smooth transitions for interactive feedback */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Positioning for pseudo-elements and content */
     position: relative;
     overflow: hidden;
+    
+    /* Pointer cursor indicates interactivity */
     cursor: pointer;
 }
 
-.stat-card::before {
-    content: '';
-    position: absolute;
+/* ========================================
+   STATISTICS CARD INTERACTIVE STATES
+   ========================================
+   Hover effects and visual feedback for dashboard statistics
+*/
+.dashboard-statistics-card::before {
+    content: ''; /* Required for pseudo-element */
+    position: absolute; /* Positioned relative to card */
+    
+    /* Top accent bar that appears on hover */
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
+    height: 4px; /* Thicker than regular accent for emphasis */
+    
+    /* Primary gradient background */
     background: var(--gradient-primary);
-    opacity: 0;
+    opacity: 0; /* Hidden by default, shown on hover */
+    
+    /* Smooth fade transition */
     transition: opacity 0.3s ease;
 }
 
-.stat-card:hover {
+/* Hover state: Card lifts up with enhanced shadows */
+.dashboard-statistics-card:hover {
+    /* Subtle upward movement for interactive feedback */
     transform: translateY(-8px);
+    
+    /* Enhanced shadows: base shadow plus glow effect */
     box-shadow: var(--shadow-xl), var(--shadow-glow);
+    
+    /* Border color change to match primary theme */
     border-color: hsl(var(--primary) / 0.3);
 }
 
-.stat-card:hover::before {
-    opacity: 1;
+/* Show the accent bar on hover */
+.dashboard-statistics-card:hover::before {
+    opacity: 1; /* Fully visible accent bar */
 }
 
-/* Buttons */
-.btn {
+/* ========================================
+   BUTTON COMPONENTS
+   ========================================
+   Base button styling with consistent spacing and typography
+*/
+.interactive-button {
+    /* Flexbox layout for proper icon and text alignment */
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    
+    /* Comfortable padding for touch targets */
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
+    
+    /* Typography settings for readability */
     font-weight: 500;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: none;
     font-size: 0.875rem;
+    
+    /* Remove default styling and add interaction states */
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    
+    /* Smooth transitions for all interactive states */
+    transition: all 0.2s ease;
 }
 
-.btn-primary {
+/* ========================================
+   PRIMARY BUTTON VARIANT
+   ========================================
+   Main call-to-action buttons with gradient background
+*/
+.interactive-button--primary {
+    /* Primary gradient background from design system */
     background: var(--gradient-primary);
-    color: white;
+    color: white; /* High contrast text for accessibility */
 }
 
-.btn-primary:hover {
+/* Primary button hover state with lift effect */
+.interactive-button--primary:hover {
+    /* Subtle upward movement for tactile feedback */
     transform: translateY(-1px);
+    
+    /* Enhanced shadow for depth perception */
     box-shadow: var(--shadow-lg);
 }
 
-.btn-secondary {
+/* ========================================
+   SECONDARY BUTTON VARIANT
+   ========================================
+   Secondary action buttons with outlined style
+*/
+.interactive-button--secondary {
+    /* Neutral background with semantic colors */
     background: hsl(var(--secondary));
     color: hsl(var(--secondary-foreground));
+    
+    /* Visible border for outlined appearance */
     border: 1px solid hsl(var(--border));
 }
 
-.btn-secondary:hover {
+/* Secondary button hover state with background opacity change */
+.interactive-button--secondary:hover {
+    /* Slightly transparent background for subtle feedback */
     background: hsl(var(--secondary) / 0.8);
 }
 
@@ -312,6 +504,12 @@ body {
     font-family: inherit;
 }
 
+/* Fix calendar icon color in dark mode */
+.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+}
+
 .input:focus, .select:focus {
     outline: none;
     border-color: hsl(var(--primary));
@@ -335,7 +533,7 @@ body {
 /* Task form enhancements */
 .task-form-grid {
     display: grid;
-    grid-template-columns: 1fr auto auto auto;
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
     gap: 0.75rem;
     align-items: end;
 }
@@ -354,6 +552,17 @@ body {
     letter-spacing: 0.025em;
 }
 
+@media (max-width: 1024px) {
+    .task-form-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .form-group:nth-child(1) {
+        grid-column: 1 / -1;
+    }
+}
+
 @media (max-width: 768px) {
     .task-form-grid {
         grid-template-columns: 1fr;
@@ -365,57 +574,220 @@ body {
     }
 }
 
-/* Navigation */
-.nav-link {
+/* ========================================
+   DESKTOP NAVIGATION LINKS
+   ========================================
+   Navigation links for desktop and tablet layouts
+*/
+.desktop-navigation-link {
+    /* Comfortable padding for desktop interaction */
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
+    
+    /* Clean link styling */
     text-decoration: none;
     color: hsl(var(--muted-foreground));
     font-weight: 500;
+    
+    /* Smooth transitions for hover effects */
     transition: all 0.2s ease;
 }
 
-.nav-link:hover {
+/* Desktop navigation link hover state */
+.desktop-navigation-link:hover {
+    /* Primary color with subtle background */
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.1);
 }
 
-.nav-link.active {
+/* Active page state for desktop navigation */
+.desktop-navigation-link.active-page {
+    /* Consistent with hover state for visual clarity */
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.1);
 }
 
-.fixed-nav {
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: calc(100% - 2rem);
-    max-width: 72rem;
-    z-index: 100;
+/* ========================================
+   MOBILE NAVIGATION COMPONENTS
+   ========================================
+   Navigation elements specifically for mobile devices
+*/
+
+/* Container for mobile navigation - hidden on desktop */
+.mobile-navigation-container {
+    display: none; /* Hidden by default, shown on mobile via media query */
 }
 
-.main-content {
-    padding-top: 8rem; /* Adjust based on nav height */
-}
-
-
-/* Theme Toggle */
-.theme-toggle {
+/* Hamburger menu button for mobile navigation */
+.mobile-menu-hamburger-button {
+    /* Centered flex layout for hamburger icon */
     display: flex;
     align-items: center;
     justify-content: center;
+    
+    /* Consistent square dimensions with theme toggle */
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.5rem;
+    
+    /* Neutral styling matching other navigation elements */
     background: hsl(var(--muted));
     border: none;
     color: hsl(var(--muted-foreground));
+    
+    /* Interactive feedback */
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.theme-toggle:hover {
+/* Mobile menu button hover state */
+.mobile-menu-hamburger-button:hover {
+    /* Accent colors for visual feedback */
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+}
+
+/* ========================================
+   MOBILE DROPDOWN MENU
+   ========================================
+   Collapsible navigation menu for mobile devices
+*/
+.mobile-navigation-dropdown-menu {
+    /* Hidden by default, shown when toggled */
+    display: none;
+    
+    /* Positioned relative to navigation bar */
+    position: absolute;
+    top: 100%; /* Appears directly below navigation */
+    left: 0.75rem;
+    right: 0.75rem;
+    
+    /* Enhanced glassmorphism for better visibility */
+    background: linear-gradient(145deg, 
+        hsl(var(--background) / 0.95), 
+        hsl(var(--background) / 0.85)
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid hsl(var(--border) / 0.8);
+    border-radius: var(--radius-lg);
+    
+    /* Enhanced shadow for dropdown elevation */
+    box-shadow: var(--shadow-xl), 
+                0 0 40px hsl(var(--primary) / 0.1);
+    
+    /* Comfortable padding for menu items */
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    
+    /* High z-index to appear above all other content */
+    z-index: 1001;
+}
+
+/* Visible state of mobile menu with animation */
+.mobile-navigation-dropdown-menu.menu-visible {
+    display: block;
+    animation: slideDown 0.2s ease-out; /* Smooth appearance animation */
+}
+
+/* ========================================
+   MOBILE NAVIGATION LINKS
+   ========================================
+   Individual navigation items within the mobile dropdown
+*/
+.mobile-navigation-menu-link {
+    /* Horizontal layout with icon and text */
+    display: flex;
+    align-items: center;
+    gap: 0.75rem; /* Space between icon and text */
+    
+    /* Generous padding for touch-friendly interaction */
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    
+    /* Typography and color styling */
+    text-decoration: none;
+    color: hsl(var(--muted-foreground));
+    font-weight: 500;
+    
+    /* Smooth transitions for interactive states */
+    transition: all 0.2s ease;
+    
+    /* Bottom margin for spacing between menu items */
+    margin-bottom: 0.25rem;
+}
+
+/* Mobile navigation link hover state */
+.mobile-navigation-menu-link:hover {
+    /* Primary color with background highlight */
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.1);
+}
+
+/* Active state for current page in mobile navigation */
+.mobile-navigation-menu-link.active-page {
+    /* Same styling as hover for consistency */
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.1);
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   RESPONSIVE NAVIGATION BEHAVIOR
+   ========================================
+   Show/hide desktop and mobile navigation based on screen size
+*/
+@media (max-width: 768px) {
+    /* Hide desktop navigation on mobile devices */
+    .desktop-navigation-container {
+        display: none;
+    }
+    
+    /* Show mobile navigation on small screens */
+    .mobile-navigation-container {
+        display: flex;
+    }
+}
+
+/* Theme Toggle */
+/* ========================================
+   THEME TOGGLE BUTTON
+   ========================================
+   Square button for switching between light and dark modes
+*/
+.theme-mode-toggle-button {
+    /* Centered flex layout for icon */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Square dimensions for consistent appearance */
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    
+    /* Neutral styling that works in both themes */
+    background: hsl(var(--muted));
+    border: none;
+    color: hsl(var(--muted-foreground));
+    
+    /* Interactive states */
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Theme toggle hover state */
+.theme-mode-toggle-button:hover {
+    /* Accent colors for better visual feedback */
     background: hsl(var(--accent));
     color: hsl(var(--accent-foreground));
 }
@@ -530,7 +902,14 @@ body {
 
 .priority-btn.active {
     color: hsl(var(--important));
-    background: hsl(var(--important) / 0.1);
+    background: hsl(var(--important) / 0.2);
+    /* Make the star icon filled/shaded when active */
+    opacity: 1;
+}
+
+.priority-btn.active svg {
+    fill: hsl(var(--important));
+    stroke: hsl(var(--important));
 }
 
 .priority-btn.active:hover {
@@ -651,18 +1030,54 @@ ul {
     border-radius: 0.25rem;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
+/* Responsive typography adjustments */
+@media (max-width: 480px) {
+    .text-4xl {
+        font-size: 1.75rem;
+        line-height: 2rem;
+    }
+    
+    .text-3xl {
+        font-size: 1.5rem;
+        line-height: 1.75rem;
+    }
+    
+    .text-2xl {
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+    }
+    
     .container {
-        padding: 0 0.5rem;
+        padding-top: 7rem;
     }
-    
-    .navbar-card {
-        padding: 1rem;
-    }
-    
+}
+
+@media (max-width: 768px) {
     .text-4xl {
         font-size: 1.875rem;
         line-height: 2.25rem;
     }
+    
+    .main-navigation-bar {
+        padding: 1rem 1.25rem;
+    }
+    
+    .content-section-card {
+        margin: 0 0.5rem;
+    }
+}
+
+/* Enhanced grid responsiveness */
+@media (min-width: 640px) {
+    .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 768px) {
+    .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+    .lg\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .lg\\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }

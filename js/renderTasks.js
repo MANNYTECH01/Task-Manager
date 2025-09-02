@@ -28,20 +28,57 @@ export function renderTasks(container, tasks, { onToggle, onDelete, onTogglePrio
  */
 function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
     const isImportant = task.priority === 'important';
-    const dueDate = task.dueDate ? new Date(task.dueDate) : null;
-    const now = new Date();
-    const isOverdue = dueDate && dueDate < now && !task.completed;
-    const isDueSoon = dueDate && dueDate > now && dueDate <= new Date(now.getTime() + 60 * 60 * 1000);
     
-    let dueDateDisplay = '';
-    if (dueDate) {
+    // Handle both new (startDateTime/endDateTime) and old (dueDate) formats for compatibility
+    const startTime = task.startDateTime ? new Date(task.startDateTime) : null;
+    const endTime = task.endDateTime ? new Date(task.endDateTime) : (task.dueDate ? new Date(task.dueDate) : null);
+    
+    const now = new Date();
+    const isOverdue = endTime && endTime < now && !task.completed;
+    const isDueSoon = endTime && endTime > now && endTime <= new Date(now.getTime() + 60 * 60 * 1000);
+    
+    let dateTimeDisplay = '';
+    if (startTime || endTime) {
         const options = { 
             month: 'short', 
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
         };
-        dueDateDisplay = dueDate.toLocaleDateString('en-US', options);
+        
+        if (startTime && endTime) {
+            // Show both start and end times
+            const startDisplay = startTime.toLocaleDateString('en-US', options);
+            const endDisplay = endTime.toLocaleDateString('en-US', options);
+            dateTimeDisplay = `
+                <div class="task-due-date ${isOverdue ? 'overdue' : ''}">
+                    <i data-lucide="play" class="h-3 w-3"></i>
+                    Start: ${startDisplay}
+                </div>
+                <div class="task-due-date ${isOverdue ? 'overdue' : ''}">
+                    <i data-lucide="flag" class="h-3 w-3"></i>
+                    End: ${endDisplay}
+                </div>
+            `;
+        } else if (startTime) {
+            // Show only start time
+            const startDisplay = startTime.toLocaleDateString('en-US', options);
+            dateTimeDisplay = `
+                <div class="task-due-date">
+                    <i data-lucide="play" class="h-3 w-3"></i>
+                    Start: ${startDisplay}
+                </div>
+            `;
+        } else if (endTime) {
+            // Show only end time (backward compatibility with dueDate)
+            const endDisplay = endTime.toLocaleDateString('en-US', options);
+            dateTimeDisplay = `
+                <div class="task-due-date ${isOverdue ? 'overdue' : ''}">
+                    <i data-lucide="flag" class="h-3 w-3"></i>
+                    Due: ${endDisplay}
+                </div>
+            `;
+        }
     }
 
     return `
@@ -56,10 +93,7 @@ function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
             <div class="task-content">
                 <div class="task-text ${task.completed ? 'completed' : ''}">
                     <span>${task.description}</span>
-                    ${dueDate ? `<div class="task-due-date ${isOverdue ? 'overdue' : ''}">
-                        <i data-lucide="clock" class="h-3 w-3"></i>
-                        ${dueDateDisplay}
-                    </div>` : ''}
+                    ${dateTimeDisplay}
                 </div>
             </div>
 
