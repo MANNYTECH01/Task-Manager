@@ -32,28 +32,17 @@ class Dashboard {
         notificationManager.init();
     }
 
+
     /**
      * STATISTICS CARDS RENDERING
      * Generates and displays task statistics in interactive cards
      */
     renderStatisticsCards() {
         const taskStatistics = taskManager.getTaskStats();
-        const allTasks = taskManager.getTasks();
         const statisticsContainer = document.getElementById('dashboard-statistics-container');
         
         // Early return if container element not found
         if (!statisticsContainer) return;
-
-        // Calculate additional task metrics for enhanced dashboard
-        const importantTasksCount = allTasks.filter(task => 
-            task.priority === 'important' && !task.completed
-        ).length;
-        
-        const currentTime = new Date();
-        const overdueTasksCount = allTasks.filter(task => {
-            if (task.completed || !task.dueDate) return false;
-            return new Date(task.dueDate) < currentTime;
-        }).length;
 
         // Generate statistics cards HTML with descriptive classes and accessibility
         statisticsContainer.innerHTML = `
@@ -101,7 +90,6 @@ class Dashboard {
         // Re-initialize icons after DOM update
         initIcons();
     }
-
     /**
      * PRODUCTIVITY TIP RENDERING
      * Displays a random productivity tip to help user engagement

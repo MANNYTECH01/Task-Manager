@@ -122,30 +122,26 @@ class TaskManager {
     }
 
     // Get tasks due soon (within next hour) or starting soon
-    getTasksDueSoon() {
-        const now = new Date();
-        const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
-        
-        return this.tasks.filter(task => {
-            if (task.completed) return false;
-            
-            // Check end time (due date)
-            const endTime = task.endDateTime || task.dueDate; // Backward compatibility
-            if (endTime) {
-                const endDate = new Date(endTime);
-                if (endDate <= oneHourFromNow && endDate > now) return true;
-            }
-            
-            // Check start time
-            if (task.startDateTime) {
-                const startDate = new Date(task.startDateTime);
-                if (startDate <= oneHourFromNow && startDate > now) return true;
-            }
-            
-            return false;
-        });
-    }
+    // In TaskFlow/js/taskManager.js
 
+// Get tasks due soon (within next hour)
+        getTasksDueSoon() {
+            const now = new Date();
+            const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
+            
+            return this.tasks.filter(task => {
+                if (task.completed) return false;
+                
+                // Check only the end time (due date)
+                const endTime = task.endDateTime || task.dueDate; // Backward compatibility
+                if (endTime) {
+                    const endDate = new Date(endTime);
+                    return endDate <= oneHourFromNow && endDate > now;
+                }
+                
+                return false;
+            });
+        }
 // Get sorted tasks (important first, then by time)
         getSortedTasks() {
             return [...this.tasks].sort((a, b) => {
