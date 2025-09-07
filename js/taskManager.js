@@ -189,24 +189,7 @@ class TaskManager {
             });
         }
 
-        // Get tasks due soon (within next hour) 
-        getTasksDueSoon() {
-            const now = new Date();
-            const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
-            
-            return this.tasks.filter(task => {
-                if (task.completed) return false;
-                
-                // Check end time (due date)
-                const endTime = task.endDateTime || task.dueDate; // Backward compatibility
-                if (endTime) {
-                    const endDate = new Date(endTime);
-                    return endDate <= oneHourFromNow && endDate > now;
-                }
-                
-                return false;
-            });
-        }
+       
 
     // Get task statistics
     getTaskStats() {

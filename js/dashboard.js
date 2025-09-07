@@ -28,8 +28,8 @@ class Dashboard {
         initIcons();        // Initialize Lucide icons
         initMobileMenu();   // Initialize mobile navigation
         
-        // Check for notifications
-        this.checkForNotifications();
+        // Explicitly start the notification manager
+        notificationManager.init();
     }
 
     /**
@@ -57,7 +57,6 @@ class Dashboard {
 
         // Generate statistics cards HTML with descriptive classes and accessibility
         statisticsContainer.innerHTML = `
-            <!-- Total Tasks Statistics Card -->
             <div class="dashboard-statistics-card" role="button" tabindex="0" aria-label="Total tasks: ${taskStatistics.total}">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="text-lg font-semibold">Total Tasks</h3>
@@ -67,7 +66,6 @@ class Dashboard {
                 <p class="text-sm text-muted-foreground">All your tasks</p>
             </div>
 
-            <!-- Completed Tasks Statistics Card -->
             <div class="dashboard-statistics-card" role="button" tabindex="0" aria-label="Completed tasks: ${taskStatistics.completed}">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="text-lg font-semibold">Completed</h3>
@@ -77,7 +75,6 @@ class Dashboard {
                 <p class="text-sm text-muted-foreground">Tasks finished</p>
             </div>
 
-            <!-- Remaining Tasks Statistics Card -->
             <div class="dashboard-statistics-card" role="button" tabindex="0" aria-label="Remaining tasks: ${taskStatistics.incomplete}">
                 <div class="flex items-center justify-between mb-2">
                     <h3 class="text-lg font-semibold">Remaining</h3>
@@ -87,7 +84,6 @@ class Dashboard {
                 <p class="text-sm text-muted-foreground">Tasks to do</p>
             </div>
 
-            <!-- Progress Overview Card - spans full width -->
             <div class="dashboard-statistics-card" style="grid-column: 1 / -1;" role="region" aria-label="Progress overview">
                 <h3 class="text-lg font-semibold mb-4">Progress Overview</h3>
                 <div class="space-y-2">
@@ -95,7 +91,6 @@ class Dashboard {
                         <span>Completion Rate</span>
                         <span class="font-medium">${taskStatistics.completionRate}%</span>
                     </div>
-                    <!-- Progress bar with semantic HTML -->
                     <div class="progress-bar" role="progressbar" aria-valuenow="${taskStatistics.completionRate}" aria-valuemin="0" aria-valuemax="100" aria-label="Task completion progress">
                         <div class="progress-fill" style="width: ${taskStatistics.completionRate}%"></div>
                     </div>
@@ -119,57 +114,8 @@ class Dashboard {
     }
 
     /**
-     * CHECK FOR NOTIFICATIONS
-     * Checks if there are any upcoming tasks that need notification
-     */
-    checkForNotifications() {
-        const dueSoonTasks = taskManager.getTasksDueSoon();
-        
-        if (dueSoonTasks.length > 0) {
-            const task = dueSoonTasks[0]; // Get the first due soon task
-            this.showInAppNotification(`"${task.description}" is due soon!`);
-            
-            // Also show browser notification if permitted
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification('TaskFlow Reminder', {
-                    body: `"${task.description}" is due soon!`,
-                    icon: '/favicon.ico'
-                });
-            }
-        }
-    }
-
-    /**
-     * SHOW IN-APP NOTIFICATION
-     * Displays a notification banner at the top of the screen
-     * @param {string} message - The notification message to display
-     */
-    showInAppNotification(message) {
-        const notificationBanner = document.getElementById('notification-banner');
-        const notificationMessage = document.getElementById('notification-message');
-        
-        if (notificationBanner && notificationMessage) {
-            notificationMessage.textContent = message;
-            notificationBanner.style.display = 'block';
-            
-            // Set up close button
-            const closeButton = document.getElementById('notification-close');
-            if (closeButton) {
-                closeButton.addEventListener('click', () => {
-                    notificationBanner.style.display = 'none';
-                });
-            }
-            
-            // Auto-hide after 5 seconds
-            setTimeout(() => {
-                notificationBanner.style.display = 'none';
-            }, 5000);
-        }
-    }
-
-    /**
      * USER INTERACTION EVENT LISTENERS
-     * Sets up all interactive elements and their event handlers
+     Sets up all interactive elements and their event handlers
      */
     attachUserInteractionListeners() {
         // Clear completed tasks button functionality

@@ -1106,6 +1106,27 @@ ul {
     margin-top: 0.5rem;
 }
 
+/* 1. Shade the star icon when a task is marked as important */
+.priority-btn.active i {
+  fill: hsl(var(--important));
+}
+
+.task-text span {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* 3. Rearrange task action icons for very small mobile screens */
+@media (max-width: 375px) {
+  .task-item {
+    align-items: flex-start; /* Align checkbox and content to the top */
+  }
+  .task-actions {
+    flex-direction: column; /* Stack icons vertically */
+    gap: 0.5rem; /* Add vertical spacing between icons */
+  }
+}
+
 /* Mobile header adjustments */
 @media (max-width: 768px) {
     .text-center {
@@ -1139,4 +1160,67 @@ ul {
     .flex-col .interactive-button:last-child {
         margin-bottom: 0;
     }
+}
+
+/* === COMPREHENSIVE TASK LAYOUT & ICON FIX === */
+
+/* 1. Fix awkward text wrapping of description and priority badge */
+.task-text {
+  display: flex;
+  align-items: flex-start; /* Aligns text and badge to the top */
+  justify-content: space-between; /* Pushes badge to the right */
+  flex-wrap: wrap; /* Allows wrapping on narrow screens */
+  gap: 0.5rem;
+}
+.task-text > span:first-child {
+    word-break: break-word; /* Ensures long words in description do not overflow */
+}
+
+/* 2. Style the star icon correctly for important tasks */
+/* Default state for all priority button icons (empty) */
+.priority-btn svg {
+  fill: none;
+  stroke: hsl(var(--muted-foreground));
+  transition: all 0.2s ease;
+}
+/* Hover state for all priority buttons */
+.priority-btn:hover svg {
+  stroke: hsl(var(--important));
+}
+/* Active (important) state - SHADED STAR */
+.priority-btn.active svg {
+  fill: hsl(var(--important));
+  stroke: hsl(var(--important));
+}
+
+
+/* 3. Reorganize the entire task item layout for mobile using CSS Grid */
+@media (max-width: 480px) {
+  .task-item {
+    display: grid;
+    grid-template-columns: auto 1fr; /* Col 1 for checkbox, Col 2 for content */
+    grid-template-rows: auto auto; /* Row 1 for content, Row 2 for actions */
+    grid-template-areas:
+      "checkbox content"
+      "actions actions"; /* Actions span the full width on a new line */
+    gap: 0.25rem 0.75rem; /* row-gap column-gap */
+    align-items: center;
+  }
+
+  .task-checkbox {
+    grid-area: checkbox;
+    align-self: start; /* Align checkbox to the top of its row */
+    margin-top: 0.25rem;
+  }
+
+  .task-content {
+    grid-area: content;
+    padding: 0;
+  }
+
+  .task-actions {
+    grid-area: actions;
+    justify-self: end; /* Align the icon group to the far right */
+    padding-top: 0.5rem; /* Add space between content and icons */
+  }
 }

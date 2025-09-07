@@ -99,7 +99,7 @@ function renderTaskItem(task, { onToggle, onDelete, onTogglePriority, onEdit }) 
                 <button class="btn btn-ghost priority-btn ${isImportant ? 'active' : ''}" 
                         data-action="priority" 
                         title="${isImportant ? 'Remove from important' : 'Mark as important'}">
-                    <i data-lucide="${isImportant ? 'star' : 'star-off'}" class="h-4 w-4 ${isImportant ? 'text-important' : ''}"></i>
+                    <i data-lucide="star" class="h-4 w-4 ${isImportant ? 'text-important' : ''}"></i>
                 </button>
                 <button class="btn btn-ghost" data-action="edit" title="Edit task">
                     <i data-lucide="edit" class="h-4 w-4"></i>

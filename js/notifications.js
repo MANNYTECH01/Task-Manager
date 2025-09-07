@@ -2,10 +2,14 @@
 class NotificationManager {
     constructor() {
         this.notifications = new Map();
-        this.init();
+        this.isInitialized = false; // Add this flag
     }
 
     async init() {
+        // Prevent multiple initializations
+        if (this.isInitialized) return;
+        this.isInitialized = true;
+
         // Request notification permission
         if ('Notification' in window && Notification.permission === 'default') {
             await Notification.requestPermission();
@@ -110,32 +114,49 @@ class NotificationManager {
     }
 
     showInAppNotification(task, type) {
+        // Remove any existing banner to prevent duplicates
+        const existingBanner = document.querySelector('.notification-banner');
+        if (existingBanner) {
+            existingBanner.remove();
+        }
+
+        const message = type === 'start' 
+            ? `It's time to start: "${task.description}"` 
+            : `"${task.description}" is due soon!`;
+        const icon = type === 'start' ? 'play-circle' : 'bell';
+
         // Create a visual notification banner
-        const notification = document.createElement('div');
-        notification.className = 'notification-banner';
-        notification.innerHTML = `
+        const banner = document.createElement('div');
+        banner.className = 'notification-banner';
+        banner.style.display = 'block';
+        banner.innerHTML = `
             <div class="notification-content">
-                <i data-lucide="${type === 'start' ? 'play' : 'bell'}" class="h-5 w-5"></i>
+                <i data-lucide="${icon}" class="h-5 w-5 text-primary"></i>
                 <div class="notification-text">
-                    <strong>${type === 'start' ? 'Time to Start:' : 'Task Due:'}</strong> ${task.description}
+                    <span>${message}</span>
                 </div>
-                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
+                <button class="notification-close">
                     <i data-lucide="x" class="h-4 w-4"></i>
                 </button>
             </div>
         `;
         
-        document.body.appendChild(notification);
+        document.body.appendChild(banner);
+
+        // Add a click listener to the close button to remove the banner
+        banner.querySelector('.notification-close').addEventListener('click', () => {
+            banner.remove();
+        });
         
-        // Initialize icons for the notification
+        // Initialize Lucide icons for the new banner
         if (window.lucide) {
             window.lucide.createIcons();
         }
         
-        // Auto-remove after 10 seconds
+        // Auto-remove the banner after 10 seconds
         setTimeout(() => {
-            if (notification.parentElement) {
-                notification.remove();
+            if (banner.parentElement) {
+                banner.remove();
             }
         }, 10000);
     }

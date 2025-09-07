@@ -28,6 +28,7 @@ class TasksPage {
         initTheme();        // Initialize theme system
         initIcons();        // Initialize Lucide icons 
         initMobileMenu();   // Initialize mobile navigation
+        notificationManager.init();
     }
 
     /**
