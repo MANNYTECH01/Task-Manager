@@ -89,8 +89,8 @@ class NotificationManager {
     showSystemNotification(task, type) {
         if ('Notification' in window && Notification.permission === 'granted') {
             const title = type === 'start' 
-                ? 'TaskFlow - Time to Start Task' 
-                : 'TaskFlow - Task Due Soon';
+                ? 'Task Manager - Time to Start Task' 
+                : 'Task Manager - Task Due Soon';
                 
             const body = type === 'start'
                 ? `It's time to start: "${task.description}"`

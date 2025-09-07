@@ -1,7 +1,7 @@
 // Task Manager Module - Core business logic
 class TaskManager {
     constructor() {
-        this.storageKey = 'taskflow-tasks';
+        this.storageKey = 'Task Manager-tasks';
         this.tasks = this.loadTasks();
     }
 
@@ -122,7 +122,7 @@ class TaskManager {
     }
 
     // Get tasks due soon (within next hour) or starting soon
-    // In TaskFlow/js/taskManager.js
+    // In Task Manager/js/taskManager.js
 
 // Get tasks due soon (within next hour)
         getTasksDueSoon() {
