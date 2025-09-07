@@ -1,8 +1,10 @@
 // Notification system for task reminders and start time alerts
+import { showToast } from './utils.js';
+
 class NotificationManager {
     constructor() {
         this.notifications = new Map();
-        this.isInitialized = false; // Add this flag
+        this.isInitialized = false;
     }
 
     async init() {
@@ -10,12 +12,23 @@ class NotificationManager {
         if (this.isInitialized) return;
         this.isInitialized = true;
 
-        // Request notification permission
-        if ('Notification' in window && Notification.permission === 'default') {
-            await Notification.requestPermission();
+        if ('Notification' in window) {
+            const permission = Notification.permission;
+            if (permission === 'default') {
+                // If permission hasn't been granted or denied, show the native browser pop-up.
+                await Notification.requestPermission();
+            } else if (permission === 'denied') {
+                // If permission was explicitly blocked, show a clear, one-time alert with instructions.
+                // This is the standard way to handle this, as browsers prevent asking again.
+                alert(
+                    'Notifications are currently blocked by your browser.\n\n' +
+                    'To enable them, please go to your browser settings for this site and change the notification permission to "Allow".\n\n' +
+                    'You can usually find this by clicking the lock icon 🔒 next to the website address.'
+                );
+            }
         }
         
-        // Start checking for due tasks and start times
+        // Always start the checker. It will only send notifications if permission is granted.
         this.startTaskChecker();
     }
 
@@ -25,7 +38,7 @@ class NotificationManager {
             this.checkTasksForNotifications();
         }, 30000); // 30 seconds
         
-        // Also check immediately
+        // Also check immediately on load
         this.checkTasksForNotifications();
     }
 
@@ -33,7 +46,6 @@ class NotificationManager {
         // Import taskManager dynamically to avoid circular dependencies
         const { default: taskManager } = await import('./taskManager.js');
         
-        // Check for tasks due soon
         const dueTasks = taskManager.getTasksDueSoon();
         dueTasks.forEach(task => {
             if (!this.notifications.has(`due-${task.id}`)) {
@@ -41,7 +53,6 @@ class NotificationManager {
             }
         });
         
-        // Check for tasks starting soon
         const startingTasks = taskManager.getTasksStartingSoon();
         startingTasks.forEach(task => {
             if (!this.notifications.has(`start-${task.id}`)) {
@@ -65,7 +76,6 @@ class NotificationManager {
         const now = new Date();
         const timeUntil = targetDate.getTime() - now.getTime();
         
-        // Schedule notification if within the next hour
         if (timeUntil > 0 && timeUntil <= 60 * 60 * 1000) {
             const timeoutId = setTimeout(() => {
                 this.showSystemNotification(task, notificationType);
@@ -86,35 +96,35 @@ class NotificationManager {
                 ? `It's time to start: "${task.description}"`
                 : `"${task.description}" is due soon!`;
             
-            const notification = new Notification(title, {
+            const options = {
                 body: body,
                 icon: '/favicon.ico',
                 badge: '/favicon.ico',
                 tag: `${type}-${task.id}`,
-                requireInteraction: true
-            });
+                renotify: true,
+                requireInteraction: true,
+                vibrate: [200, 100, 200]
+            };
+
+            const notification = new Notification(title, options);
 
             notification.onclick = () => {
                 window.focus();
-                // Navigate to tasks page if not already there
                 if (!window.location.pathname.includes('tasks.html')) {
                     window.location.href = 'tasks.html';
                 }
                 notification.close();
             };
 
-            // Auto-close after 15 seconds
             setTimeout(() => {
                 notification.close();
             }, 15000);
         } else {
-            // Fallback to in-app notification
             this.showInAppNotification(task, type);
         }
     }
 
     showInAppNotification(task, type) {
-        // Remove any existing banner to prevent duplicates
         const existingBanner = document.querySelector('.notification-banner');
         if (existingBanner) {
             existingBanner.remove();
@@ -125,7 +135,6 @@ class NotificationManager {
             : `"${task.description}" is due soon!`;
         const icon = type === 'start' ? 'play-circle' : 'bell';
 
-        // Create a visual notification banner
         const banner = document.createElement('div');
         banner.className = 'notification-banner';
         banner.style.display = 'block';
@@ -143,17 +152,14 @@ class NotificationManager {
         
         document.body.appendChild(banner);
 
-        // Add a click listener to the close button to remove the banner
         banner.querySelector('.notification-close').addEventListener('click', () => {
             banner.remove();
         });
         
-        // Initialize Lucide icons for the new banner
         if (window.lucide) {
             window.lucide.createIcons();
         }
         
-        // Auto-remove the banner after 10 seconds
         setTimeout(() => {
             if (banner.parentElement) {
                 banner.remove();
@@ -174,7 +180,6 @@ class NotificationManager {
         this.notifications.clear();
     }
     
-    // Method to manually request notification permissions
     async requestNotificationPermission() {
         if ('Notification' in window) {
             return await Notification.requestPermission();
@@ -182,7 +187,6 @@ class NotificationManager {
         return 'denied';
     }
     
-    // Check if notifications are enabled
     areNotificationsEnabled() {
         return 'Notification' in window && Notification.permission === 'granted';
     }

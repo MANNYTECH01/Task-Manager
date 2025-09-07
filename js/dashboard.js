@@ -24,6 +24,7 @@ class Dashboard {
         this.renderStatisticsCards();
         this.renderDailyProductivityTip();
         this.attachUserInteractionListeners();
+        this.setupNotificationButton(); // Add this line
         initTheme();        // Initialize theme system
         initIcons();        // Initialize Lucide icons
         initMobileMenu();   // Initialize mobile navigation
@@ -90,6 +91,7 @@ class Dashboard {
         // Re-initialize icons after DOM update
         initIcons();
     }
+    
     /**
      * PRODUCTIVITY TIP RENDERING
      * Displays a random productivity tip to help user engagement
@@ -99,6 +101,48 @@ class Dashboard {
         if (productivityTipElement) {
             productivityTipElement.textContent = getRandomTip();
         }
+    }
+
+    /**
+     * NOTIFICATION BUTTON SETUP
+     * Configures the "Enable Notifications" button based on permission status.
+     */
+    setupNotificationButton() {
+        const enableNotificationsButton = document.getElementById('enable-notifications-button');
+        if (!enableNotificationsButton || !('Notification' in window)) {
+            return; // Exit if button or Notification API not present
+        }
+
+        const updateButtonVisibility = () => {
+            if (Notification.permission === 'granted') {
+                enableNotificationsButton.style.display = 'none';
+            } else {
+                enableNotificationsButton.style.display = 'inline-flex';
+                initIcons(); // Re-render Lucide icon
+            }
+        };
+
+        // Set initial visibility
+        updateButtonVisibility();
+
+        // Add click listener
+        enableNotificationsButton.addEventListener('click', async () => {
+            if (Notification.permission === 'denied') {
+                // Guide user to manually enable notifications if they are blocked
+                alert(
+                    'Notifications are currently blocked by your browser.\n\n' +
+                    'To enable them, please go to your browser settings for this site and change the notification permission to "Allow".\n\n' +
+                    'You can usually find this by clicking the lock icon 🔒 next to the website address.'
+                );
+            } else if (Notification.permission === 'default') {
+                // Request permission if not yet decided
+                const permission = await notificationManager.requestNotificationPermission();
+                if (permission === 'granted') {
+                    showToast('Notifications enabled successfully!', 'success');
+                }
+                updateButtonVisibility(); // Hide button after granting
+            }
+        });
     }
 
     /**
