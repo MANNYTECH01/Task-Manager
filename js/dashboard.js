@@ -27,6 +27,9 @@ class Dashboard {
         initTheme();        // Initialize theme system
         initIcons();        // Initialize Lucide icons
         initMobileMenu();   // Initialize mobile navigation
+        
+        // Check for notifications
+        this.checkForNotifications();
     }
 
     /**
@@ -81,25 +84,7 @@ class Dashboard {
                     <i data-lucide="circle" class="h-5 w-5 text-muted-foreground" title="Remaining tasks icon"></i>
                 </div>
                 <div class="text-3xl font-bold">${taskStatistics.incomplete}</div>
-                <div class="text-sm text-muted-foreground mt-1">
-                    <div class="flex justify-between items-center">
-                        <span>Tasks to do</span>
-                    </div>
-                    <div class="flex justify-between items-center mt-1">
-                        <span>Important: <span style="color: hsl(var(--important))">${importantTasksCount}</span></span>
-                        <span>Regular: ${taskStatistics.incomplete - importantTasksCount}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Overdue Tasks Statistics Card -->
-            <div class="dashboard-statistics-card" role="button" tabindex="0" aria-label="Overdue tasks: ${overdueTasksCount}">
-                <div class="flex items-center justify-between mb-2">
-                    <h3 class="text-lg font-semibold">Overdue</h3>
-                    <i data-lucide="alert-triangle" class="h-5 w-5 text-danger" title="Overdue tasks warning icon"></i>
-                </div>
-                <div class="text-3xl font-bold text-danger">${overdueTasksCount}</div>
-                <p class="text-sm text-muted-foreground">Past due date</p>
+                <p class="text-sm text-muted-foreground">Tasks to do</p>
             </div>
 
             <!-- Progress Overview Card - spans full width -->
@@ -130,6 +115,55 @@ class Dashboard {
         const productivityTipElement = document.getElementById('daily-productivity-tip-content');
         if (productivityTipElement) {
             productivityTipElement.textContent = getRandomTip();
+        }
+    }
+
+    /**
+     * CHECK FOR NOTIFICATIONS
+     * Checks if there are any upcoming tasks that need notification
+     */
+    checkForNotifications() {
+        const dueSoonTasks = taskManager.getTasksDueSoon();
+        
+        if (dueSoonTasks.length > 0) {
+            const task = dueSoonTasks[0]; // Get the first due soon task
+            this.showInAppNotification(`"${task.description}" is due soon!`);
+            
+            // Also show browser notification if permitted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('TaskFlow Reminder', {
+                    body: `"${task.description}" is due soon!`,
+                    icon: '/favicon.ico'
+                });
+            }
+        }
+    }
+
+    /**
+     * SHOW IN-APP NOTIFICATION
+     * Displays a notification banner at the top of the screen
+     * @param {string} message - The notification message to display
+     */
+    showInAppNotification(message) {
+        const notificationBanner = document.getElementById('notification-banner');
+        const notificationMessage = document.getElementById('notification-message');
+        
+        if (notificationBanner && notificationMessage) {
+            notificationMessage.textContent = message;
+            notificationBanner.style.display = 'block';
+            
+            // Set up close button
+            const closeButton = document.getElementById('notification-close');
+            if (closeButton) {
+                closeButton.addEventListener('click', () => {
+                    notificationBanner.style.display = 'none';
+                });
+            }
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                notificationBanner.style.display = 'none';
+            }, 5000);
         }
     }
 

@@ -1,13 +1,13 @@
 // DOM rendering module for tasks
-import { initIcons } from './utils.js';
+import { initIcons, formatDate } from './utils.js';
 
 /**
  * Renders tasks in the specified container
  * @param {HTMLElement} container - The container element to render tasks in
  * @param {Array} tasks - Array of task objects
- * @param {Object} callbacks - Object containing onToggle, onDelete, and onTogglePriority callbacks
+ * @param {Object} callbacks - Object containing onToggle, onDelete, onTogglePriority, and onEdit callbacks
  */
-export function renderTasks(container, tasks, { onToggle, onDelete, onTogglePriority }) {
+export function renderTasks(container, tasks, { onToggle, onDelete, onTogglePriority, onEdit }) {
     if (!container) return;
     
     if (tasks.length === 0) {
@@ -15,8 +15,8 @@ export function renderTasks(container, tasks, { onToggle, onDelete, onTogglePrio
         return;
     }
 
-    container.innerHTML = tasks.map(task => renderTaskItem(task, { onToggle, onDelete, onTogglePriority })).join('');
-    attachTaskEventListeners(container, { onToggle, onDelete, onTogglePriority });
+    container.innerHTML = tasks.map(task => renderTaskItem(task, { onToggle, onDelete, onTogglePriority, onEdit })).join('');
+    attachTaskEventListeners(container, { onToggle, onDelete, onTogglePriority, onEdit });
     initIcons();
 }
 
@@ -26,7 +26,9 @@ export function renderTasks(container, tasks, { onToggle, onDelete, onTogglePrio
  * @param {Object} callbacks - Callback functions
  * @returns {string} HTML string for the task item
  */
-function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
+// In renderTasks.js, update the renderTaskItem function:
+
+function renderTaskItem(task, { onToggle, onDelete, onTogglePriority, onEdit }) {
     const isImportant = task.priority === 'important';
     
     // Handle both new (startDateTime/endDateTime) and old (dueDate) formats for compatibility
@@ -37,48 +39,29 @@ function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
     const isOverdue = endTime && endTime < now && !task.completed;
     const isDueSoon = endTime && endTime > now && endTime <= new Date(now.getTime() + 60 * 60 * 1000);
     
-    let dateTimeDisplay = '';
+    let dateDisplay = '';
     if (startTime || endTime) {
-        const options = { 
-            month: 'short', 
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        };
+        dateDisplay = '<div class="task-details">';
         
-        if (startTime && endTime) {
-            // Show both start and end times
-            const startDisplay = startTime.toLocaleDateString('en-US', options);
-            const endDisplay = endTime.toLocaleDateString('en-US', options);
-            dateTimeDisplay = `
-                <div class="task-due-date ${isOverdue ? 'overdue' : ''}">
-                    <i data-lucide="play" class="h-3 w-3"></i>
-                    Start: ${startDisplay}
-                </div>
-                <div class="task-due-date ${isOverdue ? 'overdue' : ''}">
-                    <i data-lucide="flag" class="h-3 w-3"></i>
-                    End: ${endDisplay}
-                </div>
-            `;
-        } else if (startTime) {
-            // Show only start time
-            const startDisplay = startTime.toLocaleDateString('en-US', options);
-            dateTimeDisplay = `
-                <div class="task-due-date">
-                    <i data-lucide="play" class="h-3 w-3"></i>
-                    Start: ${startDisplay}
-                </div>
-            `;
-        } else if (endTime) {
-            // Show only end time (backward compatibility with dueDate)
-            const endDisplay = endTime.toLocaleDateString('en-US', options);
-            dateTimeDisplay = `
-                <div class="task-due-date ${isOverdue ? 'overdue' : ''}">
-                    <i data-lucide="flag" class="h-3 w-3"></i>
-                    Due: ${endDisplay}
+        if (startTime) {
+            dateDisplay += `
+                <div class="task-date ${isImportant ? 'important-date' : ''}">
+                    <i data-lucide="calendar" class="h-3 w-3"></i>
+                    ${formatDate(startTime)}
                 </div>
             `;
         }
+        
+        if (endTime) {
+            dateDisplay += `
+                <div class="task-date ${isOverdue ? 'overdue' : ''} ${isImportant ? 'important-date' : ''}">
+                    <i data-lucide="flag" class="h-3 w-3"></i>
+                    ${formatDate(endTime)}
+                </div>
+            `;
+        }
+        
+        dateDisplay += '</div>';
     }
 
     return `
@@ -93,7 +76,22 @@ function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
             <div class="task-content">
                 <div class="task-text ${task.completed ? 'completed' : ''}">
                     <span>${task.description}</span>
-                    ${dateTimeDisplay}
+                    ${isImportant ? '<span class="priority-badge">Important</span>' : ''}
+                </div>
+                ${dateDisplay}
+                
+                <div class="task-edit-form">
+                    <input type="text" class="edit-input task-edit-description" value="${task.description}" placeholder="Task description">
+                    <input type="datetime-local" class="edit-input task-edit-start" value="${task.startDateTime || ''}" placeholder="Start time">
+                    <input type="datetime-local" class="edit-input task-edit-end" value="${task.endDateTime || task.dueDate || ''}" placeholder="Due date">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="edit-priority-${task.id}" class="task-edit-priority" ${isImportant ? 'checked' : ''}>
+                        <label for="edit-priority-${task.id}">Important</label>
+                    </div>
+                    <div class="edit-actions">
+                        <button class="interactive-button interactive-button--primary btn-save-edit" data-action="save-edit">Save</button>
+                        <button class="interactive-button interactive-button--secondary btn-cancel-edit" data-action="cancel-edit">Cancel</button>
+                    </div>
                 </div>
             </div>
 
@@ -101,7 +99,10 @@ function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
                 <button class="btn btn-ghost priority-btn ${isImportant ? 'active' : ''}" 
                         data-action="priority" 
                         title="${isImportant ? 'Remove from important' : 'Mark as important'}">
-                    <i data-lucide="star" class="h-4 w-4"></i>
+                    <i data-lucide="${isImportant ? 'star' : 'star-off'}" class="h-4 w-4 ${isImportant ? 'text-important' : ''}"></i>
+                </button>
+                <button class="btn btn-ghost" data-action="edit" title="Edit task">
+                    <i data-lucide="edit" class="h-4 w-4"></i>
                 </button>
                 <button class="btn btn-ghost btn-danger" data-action="delete" title="Delete task">
                     <i data-lucide="trash-2" class="h-4 w-4"></i>
@@ -110,13 +111,14 @@ function renderTaskItem(task, { onToggle, onDelete, onTogglePriority }) {
         </li>
     `;
 }
-
 /**
  * Attaches event listeners to task items
  * @param {HTMLElement} container - Container element
  * @param {Object} callbacks - Callback functions
  */
-function attachTaskEventListeners(container, { onToggle, onDelete, onTogglePriority }) {
+// In renderTasks.js, update the attachTaskEventListeners function:
+
+function attachTaskEventListeners(container, { onToggle, onDelete, onTogglePriority, onEdit }) {
     container.addEventListener('click', (e) => {
         const taskItem = e.target.closest('.task-item');
         if (!taskItem) return;
@@ -130,6 +132,27 @@ function attachTaskEventListeners(container, { onToggle, onDelete, onTogglePrior
                 break;
             case 'priority':
                 onTogglePriority(taskId);
+                break;
+            case 'edit':
+                // Enable edit mode
+                taskItem.classList.add('editing');
+                break;
+            case 'save-edit':
+                // Get edited values
+                const description = taskItem.querySelector('.task-edit-description').value;
+                const startDateTime = taskItem.querySelector('.task-edit-start').value;
+                const endDateTime = taskItem.querySelector('.task-edit-end').value;
+                const priority = taskItem.querySelector('.task-edit-priority').checked ? 'important' : 'normal';
+                
+                // Call edit callback
+                onEdit(taskId, { description, startDateTime, endDateTime, priority });
+                
+                // Exit edit mode
+                taskItem.classList.remove('editing');
+                break;
+            case 'cancel-edit':
+                // Exit edit mode without saving
+                taskItem.classList.remove('editing');
                 break;
             case 'delete':
                 if (confirm('Are you sure you want to delete this task?')) {

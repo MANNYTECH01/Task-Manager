@@ -1,4 +1,4 @@
-// Notification system for task reminders
+// Notification system for task reminders and start time alerts
 class NotificationManager {
     constructor() {
         this.notifications = new Map();
@@ -11,54 +11,82 @@ class NotificationManager {
             await Notification.requestPermission();
         }
         
-        // Start checking for due tasks
-        this.startDueTaskChecker();
+        // Start checking for due tasks and start times
+        this.startTaskChecker();
     }
 
-    startDueTaskChecker() {
-        // Check every minute for due tasks
+    startTaskChecker() {
+        // Check every 30 seconds for tasks that need notifications
         setInterval(() => {
-            this.checkDueTasks();
-        }, 60000); // 60 seconds
+            this.checkTasksForNotifications();
+        }, 30000); // 30 seconds
         
         // Also check immediately
-        this.checkDueTasks();
+        this.checkTasksForNotifications();
     }
 
-    async checkDueTasks() {
+    async checkTasksForNotifications() {
         // Import taskManager dynamically to avoid circular dependencies
         const { default: taskManager } = await import('./taskManager.js');
-        const dueTasks = taskManager.getTasksDueSoon();
         
+        // Check for tasks due soon
+        const dueTasks = taskManager.getTasksDueSoon();
         dueTasks.forEach(task => {
-            if (!this.notifications.has(task.id)) {
-                this.scheduleNotification(task);
+            if (!this.notifications.has(`due-${task.id}`)) {
+                this.scheduleNotification(task, 'due');
+            }
+        });
+        
+        // Check for tasks starting soon
+        const startingTasks = taskManager.getTasksStartingSoon();
+        startingTasks.forEach(task => {
+            if (!this.notifications.has(`start-${task.id}`)) {
+                this.scheduleNotification(task, 'start');
             }
         });
     }
 
-    scheduleNotification(task) {
-        const dueDate = new Date(task.dueDate);
-        const now = new Date();
-        const timeUntilDue = dueDate.getTime() - now.getTime();
+    scheduleNotification(task, type) {
+        let targetDate;
+        let notificationType;
         
-        if (timeUntilDue > 0 && timeUntilDue <= 60 * 60 * 1000) { // Within 1 hour
+        if (type === 'due') {
+            targetDate = new Date(task.dueDate || task.endDateTime);
+            notificationType = 'due';
+        } else {
+            targetDate = new Date(task.startDateTime);
+            notificationType = 'start';
+        }
+        
+        const now = new Date();
+        const timeUntil = targetDate.getTime() - now.getTime();
+        
+        // Schedule notification if within the next hour
+        if (timeUntil > 0 && timeUntil <= 60 * 60 * 1000) {
             const timeoutId = setTimeout(() => {
-                this.showNotification(task);
-                this.notifications.delete(task.id);
-            }, timeUntilDue);
+                this.showSystemNotification(task, notificationType);
+                this.notifications.delete(`${notificationType}-${task.id}`);
+            }, timeUntil);
             
-            this.notifications.set(task.id, timeoutId);
+            this.notifications.set(`${notificationType}-${task.id}`, timeoutId);
         }
     }
 
-    showNotification(task) {
+    showSystemNotification(task, type) {
         if ('Notification' in window && Notification.permission === 'granted') {
-            const notification = new Notification('Task Reminder', {
-                body: `"${task.description}" is due now!`,
+            const title = type === 'start' 
+                ? 'TaskFlow - Time to Start Task' 
+                : 'TaskFlow - Task Due Soon';
+                
+            const body = type === 'start'
+                ? `It's time to start: "${task.description}"`
+                : `"${task.description}" is due soon!`;
+            
+            const notification = new Notification(title, {
+                body: body,
                 icon: '/favicon.ico',
                 badge: '/favicon.ico',
-                tag: task.id,
+                tag: `${type}-${task.id}`,
                 requireInteraction: true
             });
 
@@ -71,25 +99,25 @@ class NotificationManager {
                 notification.close();
             };
 
-            // Auto-close after 10 seconds
+            // Auto-close after 15 seconds
             setTimeout(() => {
                 notification.close();
-            }, 10000);
+            }, 15000);
         } else {
             // Fallback to in-app notification
-            this.showInAppNotification(task);
+            this.showInAppNotification(task, type);
         }
     }
 
-    showInAppNotification(task) {
+    showInAppNotification(task, type) {
         // Create a visual notification banner
         const notification = document.createElement('div');
         notification.className = 'notification-banner';
         notification.innerHTML = `
             <div class="notification-content">
-                <i data-lucide="bell" class="h-5 w-5"></i>
+                <i data-lucide="${type === 'start' ? 'play' : 'bell'}" class="h-5 w-5"></i>
                 <div class="notification-text">
-                    <strong>Task Due:</strong> ${task.description}
+                    <strong>${type === 'start' ? 'Time to Start:' : 'Task Due:'}</strong> ${task.description}
                 </div>
                 <button class="notification-close" onclick="this.parentElement.parentElement.remove()">
                     <i data-lucide="x" class="h-4 w-4"></i>
@@ -112,16 +140,30 @@ class NotificationManager {
         }, 10000);
     }
 
-    clearNotification(taskId) {
-        if (this.notifications.has(taskId)) {
-            clearTimeout(this.notifications.get(taskId));
-            this.notifications.delete(taskId);
+    clearNotification(taskId, type = 'due') {
+        const notificationKey = `${type}-${taskId}`;
+        if (this.notifications.has(notificationKey)) {
+            clearTimeout(this.notifications.get(notificationKey));
+            this.notifications.delete(notificationKey);
         }
     }
 
     clearAllNotifications() {
         this.notifications.forEach(timeoutId => clearTimeout(timeoutId));
         this.notifications.clear();
+    }
+    
+    // Method to manually request notification permissions
+    async requestNotificationPermission() {
+        if ('Notification' in window) {
+            return await Notification.requestPermission();
+        }
+        return 'denied';
+    }
+    
+    // Check if notifications are enabled
+    areNotificationsEnabled() {
+        return 'Notification' in window && Notification.permission === 'granted';
     }
 }
 

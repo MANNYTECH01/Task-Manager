@@ -13,22 +13,25 @@ body {
     transition: color 0.3s ease, background-color 0.3s ease;
 }
 
-/* Enhanced modern color scheme - Light & Dark Mode */
+/* Modern Color Scheme - Teal and Navy */
 :root {
-    /* Light mode colors - Enhanced with modern palette */
-    --primary: 230 100% 67%;
-    --primary-hover: 230 100% 62%;
-    --primary-foreground: 210 40% 2%;
+    /* Primary colors */
+    --primary: 192 75% 45%; /* Teal */
+    --primary-hover: 192 75% 40%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Status colors */
     --success: 142 76% 36%;
     --success-hover: 142 76% 31%;
     --danger: 0 72% 60%;
     --danger-hover: 0 72% 55%;
     --warning: 38 92% 50%;
     --warning-hover: 38 92% 45%;
-    --important: 45 93% 58%; /* Golden yellow for important tasks */
-    --important-hover: 45 93% 53%; /* Slightly darker gold on hover */
+    --important: 45 93% 58%;
+    --important-hover: 45 93% 53%;
     
-    --background: 0 0% 100%;
+    /* Background and foreground */
+    --background: 210 40% 98%;
     --foreground: 222 84% 5%;
     --card: 0 0% 100%;
     --card-foreground: 222 84% 5%;
@@ -42,19 +45,19 @@ body {
     --secondary-foreground: 222 84% 5%;
     
     /* Enhanced gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(230 100% 67%), hsl(230 100% 62%));
+    --gradient-primary: linear-gradient(135deg, hsl(192 75% 45%), hsl(192 75% 40%));
     --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 31%));
     --gradient-danger: linear-gradient(135deg, hsl(0 72% 60%), hsl(0 72% 55%));
     --gradient-important: linear-gradient(135deg, hsl(291 47% 51%), hsl(291 47% 46%));
-    --gradient-bg: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.8), hsl(210 40% 98% / 0.6));
+    --gradient-bg: linear-gradient(135deg, hsl(210 40% 98%), hsl(210 40% 96%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100% / 0.9), hsl(210 40% 98% / 0.7));
     
     /* Enhanced shadows */
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
+    --shadow-glow: 0 0 20px rgba(30, 136, 168, 0.15);
     
     /* Border radius */
     --radius: 0.75rem;
@@ -62,7 +65,6 @@ body {
     --radius-lg: 1rem;
 }
 
-/* Dark mode colors - Enhanced */
 .dark {
     --background: 222 84% 5%;
     --foreground: 210 40% 98%;
@@ -77,23 +79,23 @@ body {
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
     
-    --primary: 230 100% 72%;
-    --primary-hover: 230 100% 67%;
+    --primary: 192 75% 55%;
+    --primary-hover: 192 75% 50%;
     --success: 142 76% 46%;
     --success-hover: 142 76% 41%;
     --danger: 0 72% 70%;
     --danger-hover: 0 72% 65%;
-    --important: 45 93% 65%; /* Brighter golden yellow for dark mode */
-    --important-hover: 45 93% 60%; /* Slightly darker gold on hover for dark mode */
+    --important: 45 93% 65%;
+    --important-hover: 45 93% 60%;
     
     /* Dark gradients */
     --gradient-bg: linear-gradient(135deg, hsl(222 84% 5%), hsl(217 33% 17%));
-    --gradient-primary: linear-gradient(135deg, hsl(230 100% 72%), hsl(230 100% 62%));
+    --gradient-primary: linear-gradient(135deg, hsl(192 75% 55%), hsl(192 75% 45%));
     --gradient-success: linear-gradient(135deg, hsl(142 76% 46%), hsl(142 76% 36%));
     --gradient-danger: linear-gradient(135deg, hsl(0 72% 70%), hsl(0 72% 60%));
     --gradient-important: linear-gradient(135deg, hsl(291 47% 61%), hsl(291 47% 51%));
     --gradient-card: linear-gradient(145deg, hsl(222 84% 5% / 0.8), hsl(217 33% 17% / 0.6));
-    --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.25);
+    --shadow-glow: 0 0 20px rgba(30, 136, 168, 0.25);
 }
 
 /* Layout */
@@ -109,35 +111,35 @@ body {
     max-width: 100%;
     margin: 0 auto;
     padding: 0 1rem;
-    padding-top: 8rem; /* Account for fixed navbar - increased for better spacing */
+    padding-top: 5rem;
 }
 
 /* Responsive container adjustments */
 @media (min-width: 640px) {
     .container {
         padding: 0 1.5rem;
-        padding-top: 8.5rem;
+        padding-top: 5.5rem;
     }
 }
 
 @media (min-width: 768px) {
     .container {
         padding: 0 2rem;
-        padding-top: 9rem;
+        padding-top: 6rem;
     }
 }
 
 @media (min-width: 1024px) {
     .container {
         padding: 0 2rem;
-        padding-top: 9.5rem;
+        padding-top: 6.5rem;
     }
 }
 
 @media (min-width: 1280px) {
     .container {
         padding: 0 2rem;
-        padding-top: 10rem;
+        padding-top: 7rem;
     }
 }
 
@@ -164,16 +166,24 @@ body {
 .flex-col { flex-direction: column; }
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
 
 /* Grid */
 .grid { display: grid; }
 .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .gap-2 { gap: 0.5rem; }
 .gap-4 { gap: 1rem; }
 
 @media (min-width: 768px) {
-    .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .sm\\:flex-row { flex-direction: row; }
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sm\:flex-row { flex-direction: row; }
+}
+
+@media (min-width: 1024px) {
+    .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 /* Typography */
@@ -183,6 +193,7 @@ body {
 .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
 .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
 .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
 
 .font-bold { font-weight: 700; }
 .font-semibold { font-weight: 600; }
@@ -193,259 +204,130 @@ body {
 .text-success { color: hsl(var(--success)); }
 .text-muted-foreground { color: hsl(var(--muted-foreground)); }
 
-/* ========================================
-   NAVIGATION BAR COMPONENTS
-   ========================================
-   Fixed navigation bar at the top of the page with glassmorphism effect
-*/
+/* Navigation Bar - Solid Background (No Glassmorphism) */
 .main-navigation-bar {
-    /* Enhanced glassmorphism with better visibility */
-    background: linear-gradient(145deg, 
-        hsl(var(--background) / 0.95), 
-        hsl(var(--background) / 0.85)
-    );
-    backdrop-filter: blur(20px); /* Enhanced blur for better glass effect */
-    
-    /* More visible border for better definition */
-    border: 1px solid hsl(var(--border) / 0.8);
-    
-    /* Responsive padding and shadows */
-    padding: 1.25rem 1.5rem;
-    box-shadow: var(--shadow-xl), 
-                0 0 40px hsl(var(--primary) / 0.05); /* Subtle glow */
-    
-    /* Smooth transitions for interactive states */
+    background: hsl(var(--background));
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 0.875rem 1.25rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Fixed positioning to stay at top during scroll */
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000; /* High z-index to stay above other content */
-    
-    /* Remove margins */
-    margin: 0; 
+    z-index: 1000;
+    margin: 0;
+    box-shadow: var(--shadow-md);
 }
 
-/* Responsive navbar adjustments */
 @media (min-width: 768px) {
     .main-navigation-bar {
-        padding: 1.5rem 2rem;
+        padding: 1rem 1.5rem;
     }
 }
 
 @media (min-width: 1024px) {
     .main-navigation-bar {
-        padding: 1.75rem 2.5rem;
+        padding: 1.125rem 2rem;
     }
 }
 
-/* ========================================
-   CONTENT CARD COMPONENTS  
-   ========================================
-   Reusable card component for displaying content sections
-*/
+/* Content Section Card */
 .content-section-card {
-    /* Enhanced glassmorphism with better visibility */
-    background: linear-gradient(145deg, 
-        hsl(var(--background) / 0.90), 
-        hsl(var(--background) / 0.75)
-    );
-    backdrop-filter: blur(20px);
-    
-    /* More visible border styling */
-    border: 1px solid hsl(var(--border) / 0.7);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
     border-radius: var(--radius-lg);
-    
-    /* Responsive padding */
-    padding: 1.5rem;
-    
-    /* Enhanced shadow for depth perception */
-    box-shadow: var(--shadow-xl), 
-                0 0 30px hsl(var(--primary) / 0.03);
-    
-    /* Smooth transitions for hover and focus states */
+    padding: 1rem;
+    box-shadow: var(--shadow-md);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Relative positioning for absolutely positioned children */
     position: relative;
-    overflow: hidden; /* Prevents content from breaking card boundaries */
+    overflow: hidden;
 }
 
-/* Responsive content card adjustments */
 @media (min-width: 640px) {
+    .content-section-card {
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 768px) {
     .content-section-card {
         padding: 1.75rem;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
     .content-section-card {
         padding: 2rem;
     }
 }
 
-@media (min-width: 1024px) {
-    .content-section-card {
-        padding: 2.5rem;
-    }
-}
-
-/* ========================================
-   CARD DECORATIVE ELEMENTS
-   ========================================
-   Subtle top border accent for visual hierarchy
-*/
-.main-navigation-bar::before, .content-section-card::before {
-    content: ''; /* Required for pseudo-element to display */
-    position: absolute; /* Positioned relative to parent card */
-    
-    /* Full width line at the top of the card */
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    
-    /* Primary gradient accent line */
-    background: var(--gradient-primary);
-    opacity: 0.3; /* Subtle visibility for elegant effect */
-}
-
-/* ========================================
-   DASHBOARD STATISTICS CARDS
-   ========================================
-   Interactive cards displaying task statistics with hover effects
-*/
+/* Dashboard Statistics Cards */
 .dashboard-statistics-card {
-    /* Consistent card styling with glassmorphism */
-    background: var(--gradient-card);
-    backdrop-filter: blur(16px);
-    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
     border-radius: var(--radius-lg);
-    
-    /* Comfortable padding for statistics content */
-    padding: 2rem;
-    
-    /* Enhanced shadow for prominence */
-    box-shadow: var(--shadow-lg);
-    
-    /* Smooth transitions for interactive feedback */
+    padding: 1rem;
+    box-shadow: var(--shadow-md);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Positioning for pseudo-elements and content */
     position: relative;
     overflow: hidden;
-    
-    /* Pointer cursor indicates interactivity */
     cursor: pointer;
 }
 
-/* ========================================
-   STATISTICS CARD INTERACTIVE STATES
-   ========================================
-   Hover effects and visual feedback for dashboard statistics
-*/
 .dashboard-statistics-card::before {
-    content: ''; /* Required for pseudo-element */
-    position: absolute; /* Positioned relative to card */
-    
-    /* Top accent bar that appears on hover */
+    content: '';
+    position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 4px; /* Thicker than regular accent for emphasis */
-    
-    /* Primary gradient background */
+    height: 4px;
     background: var(--gradient-primary);
-    opacity: 0; /* Hidden by default, shown on hover */
-    
-    /* Smooth fade transition */
+    opacity: 0;
     transition: opacity 0.3s ease;
 }
 
-/* Hover state: Card lifts up with enhanced shadows */
 .dashboard-statistics-card:hover {
-    /* Subtle upward movement for interactive feedback */
-    transform: translateY(-8px);
-    
-    /* Enhanced shadows: base shadow plus glow effect */
-    box-shadow: var(--shadow-xl), var(--shadow-glow);
-    
-    /* Border color change to match primary theme */
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
     border-color: hsl(var(--primary) / 0.3);
 }
 
-/* Show the accent bar on hover */
 .dashboard-statistics-card:hover::before {
-    opacity: 1; /* Fully visible accent bar */
+    opacity: 1;
 }
 
-/* ========================================
-   BUTTON COMPONENTS
-   ========================================
-   Base button styling with consistent spacing and typography
-*/
+/* Interactive Button */
 .interactive-button {
-    /* Flexbox layout for proper icon and text alignment */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    
-    /* Comfortable padding for touch targets */
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    
-    /* Typography settings for readability */
     font-weight: 500;
     font-size: 0.875rem;
-    
-    /* Remove default styling and add interaction states */
     text-decoration: none;
     border: none;
     cursor: pointer;
-    
-    /* Smooth transitions for all interactive states */
     transition: all 0.2s ease;
 }
 
-/* ========================================
-   PRIMARY BUTTON VARIANT
-   ========================================
-   Main call-to-action buttons with gradient background
-*/
 .interactive-button--primary {
-    /* Primary gradient background from design system */
     background: var(--gradient-primary);
-    color: white; /* High contrast text for accessibility */
+    color: white;
 }
 
-/* Primary button hover state with lift effect */
 .interactive-button--primary:hover {
-    /* Subtle upward movement for tactile feedback */
     transform: translateY(-1px);
-    
-    /* Enhanced shadow for depth perception */
     box-shadow: var(--shadow-lg);
 }
 
-/* ========================================
-   SECONDARY BUTTON VARIANT
-   ========================================
-   Secondary action buttons with outlined style
-*/
 .interactive-button--secondary {
-    /* Neutral background with semantic colors */
     background: hsl(var(--secondary));
     color: hsl(var(--secondary-foreground));
-    
-    /* Visible border for outlined appearance */
     border: 1px solid hsl(var(--border));
 }
 
-/* Secondary button hover state with background opacity change */
 .interactive-button--secondary:hover {
-    /* Slightly transparent background for subtle feedback */
     background: hsl(var(--secondary) / 0.8);
 }
 
@@ -492,9 +374,9 @@ body {
 
 .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
 
-/* Enhanced form elements */
+/* Form elements */
 .input, .select {
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
     border: 1px solid hsl(var(--border));
     border-radius: var(--radius-sm);
     font-size: 0.875rem;
@@ -533,7 +415,7 @@ body {
 /* Task form enhancements */
 .task-form-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 0.75rem;
     align-items: end;
 }
@@ -551,6 +433,25 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.025em;
 }
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    accent-color: hsl(var(--primary));
+}
+
+.checkbox-group label {
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+}
+
+
 
 @media (max-width: 1024px) {
     .task-form-grid {
@@ -574,158 +475,89 @@ body {
     }
 }
 
-/* ========================================
-   DESKTOP NAVIGATION LINKS
-   ========================================
-   Navigation links for desktop and tablet layouts
-*/
+/* Desktop Navigation Links */
 .desktop-navigation-link {
-    /* Comfortable padding for desktop interaction */
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
-    
-    /* Clean link styling */
     text-decoration: none;
     color: hsl(var(--muted-foreground));
     font-weight: 500;
-    
-    /* Smooth transitions for hover effects */
     transition: all 0.2s ease;
 }
 
-/* Desktop navigation link hover state */
 .desktop-navigation-link:hover {
-    /* Primary color with subtle background */
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.1);
 }
 
-/* Active page state for desktop navigation */
 .desktop-navigation-link.active-page {
-    /* Consistent with hover state for visual clarity */
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.1);
 }
 
-/* ========================================
-   MOBILE NAVIGATION COMPONENTS
-   ========================================
-   Navigation elements specifically for mobile devices
-*/
-
-/* Container for mobile navigation - hidden on desktop */
+/* Mobile Navigation Components */
 .mobile-navigation-container {
-    display: none; /* Hidden by default, shown on mobile via media query */
+    display: none;
 }
 
-/* Hamburger menu button for mobile navigation */
 .mobile-menu-hamburger-button {
-    /* Centered flex layout for hamburger icon */
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Consistent square dimensions with theme toggle */
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.5rem;
-    
-    /* Neutral styling matching other navigation elements */
     background: hsl(var(--muted));
     border: none;
     color: hsl(var(--muted-foreground));
-    
-    /* Interactive feedback */
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-/* Mobile menu button hover state */
 .mobile-menu-hamburger-button:hover {
-    /* Accent colors for visual feedback */
     background: hsl(var(--accent));
     color: hsl(var(--accent-foreground));
 }
 
-/* ========================================
-   MOBILE DROPDOWN MENU
-   ========================================
-   Collapsible navigation menu for mobile devices
-*/
+/* Mobile Dropdown Menu - Solid Background */
 .mobile-navigation-dropdown-menu {
-    /* Hidden by default, shown when toggled */
     display: none;
-    
-    /* Positioned relative to navigation bar */
     position: absolute;
-    top: 100%; /* Appears directly below navigation */
-    left: 0.75rem;
-    right: 0.75rem;
-    
-    /* Enhanced glassmorphism for better visibility */
-    background: linear-gradient(145deg, 
-        hsl(var(--background) / 0.95), 
-        hsl(var(--background) / 0.85)
-    );
-    backdrop-filter: blur(20px);
-    border: 1px solid hsl(var(--border) / 0.8);
-    border-radius: var(--radius-lg);
-    
-    /* Enhanced shadow for dropdown elevation */
-    box-shadow: var(--shadow-xl), 
-                0 0 40px hsl(var(--primary) / 0.1);
-    
-    /* Comfortable padding for menu items */
-    padding: 0.75rem;
-    margin-top: 0.5rem;
-    
-    /* High z-index to appear above all other content */
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: hsl(var(--background));
+    border-bottom: 1px solid hsl(var(--border));
+    padding: 1rem;
+    box-shadow: var(--shadow-lg);
     z-index: 1001;
 }
 
-/* Visible state of mobile menu with animation */
 .mobile-navigation-dropdown-menu.menu-visible {
     display: block;
-    animation: slideDown 0.2s ease-out; /* Smooth appearance animation */
+    animation: slideDown 0.2s ease-out;
 }
 
-/* ========================================
-   MOBILE NAVIGATION LINKS
-   ========================================
-   Individual navigation items within the mobile dropdown
-*/
+/* Mobile Navigation Links */
 .mobile-navigation-menu-link {
-    /* Horizontal layout with icon and text */
     display: flex;
     align-items: center;
-    gap: 0.75rem; /* Space between icon and text */
-    
-    /* Generous padding for touch-friendly interaction */
+    gap: 0.75rem;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
-    
-    /* Typography and color styling */
     text-decoration: none;
     color: hsl(var(--muted-foreground));
     font-weight: 500;
-    
-    /* Smooth transitions for interactive states */
     transition: all 0.2s ease;
-    
-    /* Bottom margin for spacing between menu items */
     margin-bottom: 0.25rem;
 }
 
-/* Mobile navigation link hover state */
 .mobile-navigation-menu-link:hover {
-    /* Primary color with background highlight */
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.1);
 }
 
-/* Active state for current page in mobile navigation */
 .mobile-navigation-menu-link.active-page {
-    /* Same styling as hover for consistency */
     color: hsl(var(--primary));
     background: hsl(var(--primary) / 0.1);
 }
@@ -741,103 +573,181 @@ body {
     }
 }
 
-/* ========================================
-   RESPONSIVE NAVIGATION BEHAVIOR
-   ========================================
-   Show/hide desktop and mobile navigation based on screen size
-*/
+/* Responsive Navigation Behavior */
 @media (max-width: 768px) {
-    /* Hide desktop navigation on mobile devices */
     .desktop-navigation-container {
         display: none;
     }
     
-    /* Show mobile navigation on small screens */
     .mobile-navigation-container {
         display: flex;
     }
 }
 
-/* Theme Toggle */
-/* ========================================
-   THEME TOGGLE BUTTON
-   ========================================
-   Square button for switching between light and dark modes
-*/
+/* Theme Toggle Button */
 .theme-mode-toggle-button {
-    /* Centered flex layout for icon */
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    /* Square dimensions for consistent appearance */
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 0.5rem;
-    
-    /* Neutral styling that works in both themes */
     background: hsl(var(--muted));
     border: none;
     color: hsl(var(--muted-foreground));
-    
-    /* Interactive states */
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
-/* Theme toggle hover state */
 .theme-mode-toggle-button:hover {
-    /* Accent colors for better visual feedback */
     background: hsl(var(--accent));
     color: hsl(var(--accent-foreground));
 }
 
-/* Enhanced task items with priority and due date styling */
-.task-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
-    background: var(--gradient-card);
-    backdrop-filter: blur(8px);
-    border: 1px solid hsl(var(--border) / 0.5);
-    border-radius: var(--radius-lg);
+/* Enhanced card hover effects for all dashboard sections */
+.content-section-card,
+.dashboard-statistics-card,
+.task-form-grid,
+#user-tasks-list {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    margin-bottom: 0.75rem;
+    border-radius: var(--radius-lg);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: var(--shadow-md);
 }
 
-.task-item:hover {
+/* Hover effects for all cards */
+.content-section-card:hover,
+.dashboard-statistics-card:hover,
+.task-form-grid:hover,
+#user-tasks-list:hover {
+    transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
-    transform: translateY(-2px);
     border-color: hsl(var(--primary) / 0.3);
 }
 
-.task-item.important {
-    border-left: 4px solid hsl(var(--important));
-    background: linear-gradient(135deg, hsl(var(--important) / 0.03), transparent);
-}
-
-.task-item.important::before {
+/* Add subtle accent bar on top of cards on hover */
+.content-section-card::before,
+.task-form-grid::before,
+#user-tasks-list::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: var(--gradient-important);
-    opacity: 0.3;
+    height: 4px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.content-section-card:hover::before,
+.task-form-grid:hover::before,
+#user-tasks-list:hover::before {
+    opacity: 1;
+}
+
+/* Specific styling for the Add New Task form card */
+.task-form-grid {
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Your Tasks section styling */
+#user-tasks-list {
+    position: relative;
+    overflow: hidden;
+    padding: 1.5rem;
+    margin-top: 1rem;
+}
+
+/* Quick Actions button container */
+.content-section-card .flex {
+    gap: 0.75rem;
+}
+
+/* Mobile tap highlight effect */
+@media (max-width: 768px) {
+    .content-section-card:active,
+    .dashboard-statistics-card:active,
+    .task-form-grid:active,
+    #user-tasks-list:active {
+        background: hsl(var(--accent));
+        transform: scale(0.98);
+    }
+}
+
+/* Ensure consistent padding and spacing */
+.content-section-card {
+    padding: 1.75rem;
+}
+
+/* Productivity Tips section specific styling */
+#daily-productivity-tip-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: hsl(var(--foreground));
+    padding: 0.5rem 0;
+}
+
+/* Header consistency across sections */
+.content-section-card h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: hsl(var(--foreground));
+}
+
+/* Task counter styling */
+#total-task-counter {
+    color: hsl(var(--primary));
+    font-weight: 700;
+}
+
+/* Form elements consistency */
+.task-form-grid .form-group {
+    margin-bottom: 0;
+}
+
+/* Button hover effects within cards */
+.content-section-card .interactive-button:hover {
+    transform: translateY(-1px);
+}
+
+/* Enhanced task items */
+.task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.task-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+    border-color: hsl(var(--primary) / 0.3);
+}
+
+.task-item.important {
+    border-left: 4px solid hsl(var(--important));
 }
 
 .task-item.overdue {
     border-left: 4px solid hsl(var(--danger));
-    background: linear-gradient(135deg, hsl(var(--danger) / 0.05), transparent);
     animation: subtle-pulse 2s infinite;
 }
 
 .task-item.due-soon {
     border-left: 4px solid hsl(var(--warning));
-    background: linear-gradient(135deg, hsl(var(--warning) / 0.03), transparent);
 }
 
 .task-checkbox {
@@ -858,6 +768,7 @@ body {
     font-size: 0.95rem;
     line-height: 1.5;
     color: hsl(var(--foreground));
+    margin-bottom: 0.25rem;
 }
 
 .task-text.completed {
@@ -866,22 +777,23 @@ body {
     opacity: 0.7;
 }
 
-.task-due-date {
+.task-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.task-date {
     display: flex;
     align-items: center;
     gap: 0.25rem;
     font-size: 0.75rem;
     color: hsl(var(--muted-foreground));
-    margin-top: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    background: hsl(var(--muted) / 0.5);
-    border-radius: var(--radius-sm);
-    width: fit-content;
 }
 
-.task-due-date.overdue {
-    color: hsl(var(--danger));
-    background: hsl(var(--danger) / 0.1);
+.task-date i {
+    flex-shrink: 0;
 }
 
 .task-actions {
@@ -890,30 +802,47 @@ body {
     align-items: flex-start;
 }
 
-.priority-btn {
-    color: hsl(var(--muted-foreground));
-    transition: all 0.2s ease;
-}
-
-.priority-btn:hover {
-    color: hsl(var(--important));
+.priority-badge {
     background: hsl(var(--important) / 0.1);
+    color: hsl(var(--important));
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+/* Add these styles to your CSS file */
+
+/* Style for important task dates */
+.important-date {
+    color: hsl(var(--important)) !important;
+    font-weight: 600;
 }
 
+/* Style for the active (filled) star icon */
 .priority-btn.active {
     color: hsl(var(--important));
-    background: hsl(var(--important) / 0.2);
-    /* Make the star icon filled/shaded when active */
-    opacity: 1;
-}
-
-.priority-btn.active svg {
-    fill: hsl(var(--important));
-    stroke: hsl(var(--important));
 }
 
 .priority-btn.active:hover {
-    background: hsl(var(--important) / 0.2);
+    color: hsl(var(--important-hover));
+}
+
+/* Text color for important elements */
+.text-important {
+    color: hsl(var(--important));
+}
+
+/* Enhanced important task styling */
+.task-item.important {
+    border-left: 4px solid hsl(var(--important));
+    background: linear-gradient(90deg, hsl(var(--important) / 0.05) 0%, transparent 10%);
+}
+
+/* Make important tasks stand out more */
+.task-item.important:hover {
+    border-color: hsl(var(--important));
+    box-shadow: 0 2px 8px hsl(var(--important) / 0.15);
 }
 
 @keyframes subtle-pulse {
@@ -959,8 +888,7 @@ body {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    background: var(--gradient-card);
-    backdrop-filter: blur(16px);
+    background: hsl(var(--card));
     border: 1px solid hsl(var(--border));
     border-left: 4px solid hsl(var(--primary));
     border-radius: var(--radius-lg);
@@ -999,6 +927,33 @@ body {
         transform: translateX(0);
         opacity: 1;
     }
+}
+
+/* Toast Notification */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+    box-shadow: var(--shadow-xl);
+    z-index: 1000;
+    display: none;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.toast.success {
+    border-left: 4px solid hsl(var(--success));
+}
+
+.toast.error {
+    border-left: 4px solid hsl(var(--danger));
+}
+
+.toast.info {
+    border-left: 4px solid hsl(var(--primary));
 }
 
 /* Error messages */
@@ -1048,7 +1003,14 @@ ul {
     }
     
     .container {
-        padding-top: 7rem;
+        padding-top: 4.5rem;
+    }
+    
+
+    
+    
+    .task-form-grid {
+        gap: 0.75rem;
     }
 }
 
@@ -1059,25 +1021,122 @@ ul {
     }
     
     .main-navigation-bar {
-        padding: 1rem 1.25rem;
+        padding: 0.75rem 1rem;
     }
     
     .content-section-card {
-        margin: 0 0.5rem;
+        margin: 0;
+    }
+    
+    /* Mobile-specific grid adjustments */
+    #dashboard-statistics-container {
+        gap: 0.75rem;
+    }
+    
+    /* Ensure cards stack properly on mobile */
+    .grid-cols-1, .grid-cols-3, .grid-cols-4 {
+        grid-template-columns: 1fr;
     }
 }
 
 /* Enhanced grid responsiveness */
 @media (min-width: 640px) {
-    .sm\\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (min-width: 768px) {
-    .md\\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .md\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (min-width: 1024px) {
-    .lg\\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .lg\\:grid-cols-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+/* Profile icon */
+.profile-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: hsl(var(--primary) / 0.1);
+    color: hsl(var(--primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.profile-icon:hover {
+    background: hsl(var(--primary) / 0.2);
+}
+
+/* Edit mode styles */
+.task-edit-mode .task-text {
+    display: none;
+}
+
+.task-edit-form {
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.task-item.editing .task-edit-form {
+    display: flex;
+}
+
+.task-item.editing .task-actions {
+    align-items: center;
+}
+
+.edit-input {
+    padding: 0.5rem;
+    border: 1px solid hsl(var(--border));
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.edit-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+/* Mobile header adjustments */
+@media (max-width: 768px) {
+    .text-center {
+        margin-top: 3rem !important;
+    }
+    
+    .text-4xl {
+        font-size: 1.5rem;
+    }
+    
+    .text-lg {
+        font-size: 1rem;
+    }
+}
+
+/* Ensure proper spacing on mobile */
+@media (max-width: 640px) {
+    .space-y-8 > * + * {
+        margin-top: 1.5rem;
+    }
+    
+    .interactive-button {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .flex-col .interactive-button {
+        margin-bottom: 0.5rem;
+    }
+    
+    .flex-col .interactive-button:last-child {
+        margin-bottom: 0;
+    }
 }

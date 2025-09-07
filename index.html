@@ -56,7 +56,7 @@
             <!-- Main content sections with consistent vertical spacing -->
             <div class="space-y-8">
                 <!-- Welcome header section with centered text and proper top spacing to avoid navbar overlap -->
-                <div class="text-center" style="margin-top: 5rem;">
+                <div class="text-center" style="margin-top: 3rem;">
                     <h1 class="text-4xl font-bold mb-2">Welcome to TaskFlow</h1>
                     <p class="text-muted-foreground text-lg">
                         Your productivity companion for getting things done
@@ -64,7 +64,7 @@
                 </div>
 
                 <!-- Dashboard Statistics Grid - populated dynamically by JavaScript -->
-                <div id="dashboard-statistics-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div id="dashboard-statistics-container" class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <!-- Statistics cards will be inserted here by dashboard.js -->
                 </div>
 
@@ -93,6 +93,26 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Notification Banner -->
+    <div id="notification-banner" class="notification-banner" style="display: none;">
+        <div class="notification-content">
+            <i data-lucide="bell" class="h-5 w-5 text-primary"></i>
+            <div class="notification-text">
+                <span id="notification-message"></span>
+            </div>
+            <button id="notification-close" class="notification-close">
+                <i data-lucide="x" class="h-4 w-4"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast" style="display: none;">
+        <div class="toast-content">
+            <span id="toast-message"></span>
         </div>
     </div>
 

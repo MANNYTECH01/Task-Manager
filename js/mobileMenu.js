@@ -49,6 +49,24 @@ export function initMobileMenu() {
         });
     });
 
+    // Add this to your mobileMenu.js or utils.js
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add tap feedback for mobile devices
+            if ('ontouchstart' in window) {
+                const cards = document.querySelectorAll('.content-section-card, .dashboard-statistics-card');
+                
+                cards.forEach(card => {
+                    card.addEventListener('touchstart', function() {
+                        this.classList.add('card-tapped');
+                    });
+                    
+                    card.addEventListener('touchend', function() {
+                        this.classList.remove('card-tapped');
+                    });
+                });
+            }
+        });
+
     /**
      * MOBILE THEME TOGGLE SYNCHRONIZATION
      * Syncs mobile theme toggle with the desktop theme toggle button

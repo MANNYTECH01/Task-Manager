@@ -57,7 +57,8 @@ class TasksPage {
         renderTasks(userTasksList, sortedTasks, {
             onToggle: (taskId) => this.handleTaskCompletionToggle(taskId),
             onDelete: (taskId) => this.handleTaskDeletion(taskId),
-            onTogglePriority: (taskId) => this.handleTaskPriorityToggle(taskId)
+            onTogglePriority: (taskId) => this.handleTaskPriorityToggle(taskId),
+            onEdit: (taskId, updates) => this.handleTaskEdit(taskId, updates)
         });
     }
 
@@ -69,9 +70,8 @@ class TasksPage {
         // Get form elements with descriptive names
         const taskCreationForm = document.getElementById('task-creation-form');
         const taskDescriptionInput = document.getElementById('task-description-input');
-        const taskPrioritySelect = document.getElementById('task-priority-select');
+        const taskPriorityCheckbox = document.getElementById('task-priority-checkbox');
         const taskStartDateTimeInput = document.getElementById('task-start-datetime-input');
-        const taskEndDateTimeInput = document.getElementById('task-end-datetime-input');
         const taskFormErrorMessage = document.getElementById('task-form-error-message');
 
         // Task creation form submission handling
@@ -81,9 +81,8 @@ class TasksPage {
                 
                 // Extract form data with validation
                 const taskDescription = taskDescriptionInput.value.trim();
-                const taskPriority = taskPrioritySelect.value;
+                const taskPriority = taskPriorityCheckbox.checked ? 'important' : 'normal';
                 const taskStartDateTime = taskStartDateTimeInput.value || null;
-                const taskEndDateTime = taskEndDateTimeInput.value || null;
                 
                 // Clear any previous error messages
                 if (taskFormErrorMessage) {
@@ -99,7 +98,7 @@ class TasksPage {
 
                 try {
                     // Create new task and update interface
-                    taskManager.addTask(taskDescription, taskPriority, taskStartDateTime, taskEndDateTime);
+                    taskManager.addTask(taskDescription, taskPriority, taskStartDateTime);
                     this.resetTaskCreationForm();
                     this.renderAllUserTasks();
                     this.updateTaskCountDisplay();
@@ -153,14 +152,12 @@ class TasksPage {
      */
     resetTaskCreationForm() {
         const taskDescriptionInput = document.getElementById('task-description-input');
-        const taskPrioritySelect = document.getElementById('task-priority-select');
+        const taskPriorityCheckbox = document.getElementById('task-priority-checkbox');
         const taskStartDateTimeInput = document.getElementById('task-start-datetime-input');
-        const taskEndDateTimeInput = document.getElementById('task-end-datetime-input');
         
         if (taskDescriptionInput) taskDescriptionInput.value = '';
-        if (taskPrioritySelect) taskPrioritySelect.value = 'normal';
+        if (taskPriorityCheckbox) taskPriorityCheckbox.checked = false;
         if (taskStartDateTimeInput) taskStartDateTimeInput.value = '';
-        if (taskEndDateTimeInput) taskEndDateTimeInput.value = '';
     }
 
     /**
@@ -189,22 +186,41 @@ class TasksPage {
     }
 
     /**
-     * TASK PRIORITY TOGGLE HANDLER
-     * Handles user requests to change task priority
-     * @param {string} taskId - ID of task to modify
+     * TASK EDIT HANDLER
+     * Handles user requests to edit task details
+     * @param {string} taskId - ID of task to edit
+     * @param {Object} updates - Object containing updated task properties
      */
-    handleTaskPriorityToggle(taskId) {
-        const updatedTask = taskManager.togglePriority(taskId);
-        if (updatedTask) {
-            this.renderAllUserTasks();
-            this.updateTaskCountDisplay();
-            
-            const priorityStatusMessage = updatedTask.priority === 'important' 
-                ? 'marked as important' 
-                : 'priority removed';
-            showToast(`Task ${priorityStatusMessage}`, 'success');
+    handleTaskEdit(taskId, updates) {
+        try {
+            const updatedTask = taskManager.updateTask(taskId, updates);
+            if (updatedTask) {
+                this.renderAllUserTasks();
+                this.updateTaskCountDisplay();
+                showToast('Task updated successfully', 'success');
+            }
+        } catch (error) {
+            showToast(error.message, 'error');
         }
     }
+
+        /**
+         * TASK PRIORITY TOGGLE HANDLER
+         * Handles user requests to change task priority
+         * @param {string} taskId - ID of task to modify
+         */
+        handleTaskPriorityToggle(taskId) {
+            const updatedTask = taskManager.togglePriority(taskId);
+            if (updatedTask) {
+                this.renderAllUserTasks();
+                this.updateTaskCountDisplay();
+                
+                const priorityStatusMessage = updatedTask.priority === 'important' 
+                    ? 'marked as important' 
+                    : 'priority removed';
+                showToast(`Task ${priorityStatusMessage}`, 'success');
+            }
+        }
 
     /**
      * TASK COMPLETION TOGGLE HANDLER  

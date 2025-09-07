@@ -27,15 +27,18 @@ export function initIcons() {
     }
 }
 
-// Format date for display
+// Format date for display (matches the screenshot format)
 export function formatDate(date) {
+    if (!date) return '';
+    
+    const dateObj = new Date(date);
     return new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
         month: 'short',
         day: 'numeric',
+        year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
-    }).format(new Date(date));
+    }).format(dateObj);
 }
 
 // Productivity tips

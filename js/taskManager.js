@@ -47,6 +47,7 @@ class TaskManager {
             priority: priority,
             startDateTime: startDateTime,
             endDateTime: endDateTime,
+            dueDate: endDateTime, // For backward compatibility
             createdAt: new Date().toISOString()
         };
 
@@ -96,10 +97,12 @@ class TaskManager {
             }
             if (updates.endDateTime !== undefined) {
                 task.endDateTime = updates.endDateTime;
+                task.dueDate = updates.endDateTime; // For backward compatibility
             }
             // Maintain backward compatibility
             if (updates.dueDate !== undefined) {
                 task.endDateTime = updates.dueDate;
+                task.dueDate = updates.dueDate;
             }
             this.saveTasks();
             return task;
@@ -143,34 +146,67 @@ class TaskManager {
         });
     }
 
-    // Get sorted tasks (incomplete first, then completed, priority order, then by due date)
-    getSortedTasks() {
-        return [...this.tasks].sort((a, b) => {
-            // Show incomplete tasks first
-            if (a.completed !== b.completed) {
-                return a.completed ? 1 : -1;
-            }
+// Get sorted tasks (important first, then by time)
+        getSortedTasks() {
+            return [...this.tasks].sort((a, b) => {
+                // Show incomplete tasks first
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+                
+                // Within same completion status, sort by priority (important first)
+                if (a.priority !== b.priority) {
+                    const priorityOrder = { important: 0, normal: 1 };
+                    return priorityOrder[a.priority] - priorityOrder[b.priority];
+                }
+                
+                // For tasks with same priority, sort by time
+                // Use end time if available, otherwise start time, otherwise creation time
+                const getTaskTime = (task) => {
+                    if (task.endDateTime) return new Date(task.endDateTime).getTime();
+                    if (task.dueDate) return new Date(task.dueDate).getTime();
+                    if (task.startDateTime) return new Date(task.startDateTime).getTime();
+                    return new Date(task.createdAt).getTime();
+                };
+                
+                const aTime = getTaskTime(a);
+                const bTime = getTaskTime(b);
+                
+                return aTime - bTime; // Earliest first
+            });
+        }
+
+        // Get tasks starting soon (within next hour)
+        getTasksStartingSoon() {
+            const now = new Date();
+            const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
             
-            // Within same completion status, sort by priority (important first)
-            if (a.priority !== b.priority) {
-                const priorityOrder = { important: 0, normal: 1 };
-                return priorityOrder[a.priority] - priorityOrder[b.priority];
-            }
+            return this.tasks.filter(task => {
+                if (task.completed || !task.startDateTime) return false;
+                
+                const startDate = new Date(task.startDateTime);
+                return startDate <= oneHourFromNow && startDate > now;
+            });
+        }
+
+        // Get tasks due soon (within next hour) 
+        getTasksDueSoon() {
+            const now = new Date();
+            const oneHourFromNow = new Date(now.getTime() + 60 * 60 * 1000);
             
-            // Then by end date (soonest first)
-            const aEndTime = a.endDateTime || a.dueDate; // Backward compatibility
-            const bEndTime = b.endDateTime || b.dueDate;
-            
-            if (aEndTime && bEndTime) {
-                return new Date(aEndTime).getTime() - new Date(bEndTime).getTime();
-            }
-            if (aEndTime && !bEndTime) return -1;
-            if (!aEndTime && bEndTime) return 1;
-            
-            // Finally by creation date (newest first)
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-        });
-    }
+            return this.tasks.filter(task => {
+                if (task.completed) return false;
+                
+                // Check end time (due date)
+                const endTime = task.endDateTime || task.dueDate; // Backward compatibility
+                if (endTime) {
+                    const endDate = new Date(endTime);
+                    return endDate <= oneHourFromNow && endDate > now;
+                }
+                
+                return false;
+            });
+        }
 
     // Get task statistics
     getTaskStats() {
