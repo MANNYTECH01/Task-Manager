@@ -1,7 +1,7 @@
-// Task Manager Module - Core business logic
+// TaskFlow Module - Core business logic
 class TaskManager {
     constructor() {
-        this.storageKey = 'Task Manager-tasks';
+        this.storageKey = 'TaskFlow-tasks';
         this.tasks = this.loadTasks();
     }
 
@@ -34,8 +34,8 @@ class TaskManager {
         return [...this.tasks];
     }
 
-    // Add a new task with start and end times
-    addTask(description, priority = 'normal', startDateTime = null, endDateTime = null) {
+    // Add a new task 
+    addTask(description, priority = 'normal', startDateTime = null) {
         if (!description || !description.trim()) {
             throw new Error('Task description is required');
         }
@@ -46,8 +46,6 @@ class TaskManager {
             completed: false,
             priority: priority,
             startDateTime: startDateTime,
-            endDateTime: endDateTime,
-            dueDate: endDateTime, // For backward compatibility
             createdAt: new Date().toISOString()
         };
 
@@ -95,10 +93,6 @@ class TaskManager {
             if (updates.startDateTime !== undefined) {
                 task.startDateTime = updates.startDateTime;
             }
-            if (updates.endDateTime !== undefined) {
-                task.endDateTime = updates.endDateTime;
-                task.dueDate = updates.endDateTime; // For backward compatibility
-            }
             // Maintain backward compatibility
             if (updates.dueDate !== undefined) {
                 task.endDateTime = updates.dueDate;
@@ -122,7 +116,7 @@ class TaskManager {
     }
 
     // Get tasks due soon (within next hour) or starting soon
-    // In Task Manager/js/taskManager.js
+    // In TaskFlow/js/taskManager.js
 
 // Get tasks due soon (within next hour)
         getTasksDueSoon() {
@@ -186,7 +180,7 @@ class TaskManager {
         }
 
        
-
+    //taskManager.js
     // Get task statistics
     getTaskStats() {
         const total = this.tasks.length;

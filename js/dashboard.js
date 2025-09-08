@@ -38,6 +38,7 @@ class Dashboard {
      * STATISTICS CARDS RENDERING
      * Generates and displays task statistics in interactive cards
      */
+    //dashboard.js
     renderStatisticsCards() {
         const taskStatistics = taskManager.getTaskStats();
         const statisticsContainer = document.getElementById('dashboard-statistics-container');
